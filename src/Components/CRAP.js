@@ -146,3 +146,107 @@ export default ProductCard;
                             <p>{i}</p>{/*page number*/}
                         </div >
                 }return (<div>wtf</div>)} } 
+
+
+
+
+createPage = () => {
+    const rows = [];
+    for (let i = 1; i <= this.state.pages; i++) {
+        rows.push(<ObjectPage data={i} />)
+    }
+    return rows;
+}
+
+{ this.createPage() }
+
+
+
+{
+    products.map((product) => {
+        return (
+            <div className="productBox">
+                id={product.id}
+                <h1>{product.name}</h1>
+                <h3>{product.description}</h3>
+            </div>
+        )
+    })
+}
+
+
+{ currentProducts.map(singleProduct => <OneProductCard key={singleProduct.cca3} singleProduct={singleProduct} />) }
+
+
+{ currentProducts.filter(notFilteredProduct => { notFilteredProduct.name === 'pirminis' }).map(filteredCard => <OneProductCard key={filteredCard.cca3} singleProduct={filteredCard} />) }
+
+
+selectCategory = () => {
+    const { currentProducts, category } = this.state;
+    let categorisedProducts = (currentProducts) => currentProducts
+        .filter(filteringProduct => filteringProduct.name === 'pirminis')
+        .map(filteringProduct => filteringProduct));
+// let categorisedProducts = currentProducts.filter(obj => {
+//     return obj.name === 'pirminis'
+// })
+console.log(categorisedProducts(currentProducts))
+    }
+
+
+this.state = { prop: 0 };
+this.setState((state) => ({ prop: state.prop + 1 }));
+
+
+
+let products = [
+    {
+        a: "ssaddd",
+        b: "labas",
+        c: 46356
+    },{
+        a: "ssahgjddd",
+        b: "fsdfds",
+        c: 465456
+    }, {
+        a: "ssaddd",
+        b: "labas",
+        c: 46424256
+    }, {
+        a: "ssaddd",
+        b: "sdfsdf",
+        c: 460056
+    }, {
+        a: "ssadfdsfdd",
+        b: "labas",
+        c: 46562456
+    }, {
+        a: "ssagffdhddd",
+        b: "labas",
+        c: 46245356
+    }
+]
+
+
+
+const filter = products.filter(product => product.category === "labas");
+
+
+{/* <div>
+                    {selectedProducts === '' ? (
+                        <div>{currentProducts.map(singleProduct => <OneProductCard key={singleProduct.cca3} singleProduct={singleProduct} />)}</div>
+                    ) : (
+                        <div>{selectedProducts.map(singleProduct => <OneProductCard key={singleProduct.cca3} singleProduct={singleProduct} />)}</div>
+                    )}
+                </div> */}
+
+{/* {if (selectedProducts === '') {
+                    currentProducts.map(singleProduct => <OneProductCard key={singleProduct.cca3} singleProduct={singleProduct} />)
+                }} */}
+
+
+{/* {currentProducts.filter(notFilteredProduct => { return notFilteredProduct.Name === 'pirminis' }).map(filteredCard => <OneProductCard key={filteredCard.cca3} singleProduct={filteredCard} />)} */ }
+{/* {console.log(currentProducts.filter(notFilteredProduct => { return (()=>notFilteredProduct.Name === 'pirminis' ) }))} */ }
+{/* {console.log(currentProducts)} */ }
+{/* {console.log(currentProducts[0] ? currentProducts[0].name : 'fuck')} */ }
+{/* {console.log(currentProducts.name)} */ }
+{/* PAGINATION */ }

@@ -15,4 +15,8 @@
 
 .productNav {
     list-style-type: none;
+    cursor: pointer;
+    display: inline-block;
+    
 }
+
