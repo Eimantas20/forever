@@ -14,26 +14,55 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            route: ''
-
+            route: '',
+            productsInCart: []
+         
         }
     }
 
     onRouteChange = (newRoute) => {
         this.setState({route: newRoute});  
-        // console.log(this.state)
     }
+    
+    addToBasket = (newArg, evt) => {
+        const {productsInCart} = this.state;
+        let newArg2 = JSON.parse(JSON.stringify(newArg))
+        if (!productsInCart.find(product => product.id == newArg2.id) ) {
+            newArg2.quantity = 1;
+            productsInCart.push(newArg2)
+            this.setState({ productsInCart });
+        } else if (productsInCart.find(product => product.id == newArg2.id && product.quantity < 10) ) {
+            let currentQuantity = productsInCart.find(product => product.id == newArg2.id).quantity
+            productsInCart.find(product => product.id == newArg2.id).quantity = currentQuantity + 1;
+            this.setState({ productsInCart});
+        }
+    }
+    deleteItem = (singleProduct) => {
+        const { productsInCart } = this.state;
+        let index = productsInCart.findIndex(product => product.id == singleProduct.id);
+        if (index !== -1) {
+            productsInCart.splice(index, 1)
+        }
+        this.setState({ productsInCart }, () => this.test())
+    }
+
+    test = () => {console.log(this.state.productsInCart)}
 
     render() {
         const changePage = () => {
             if (this.state.route === 'About') {
-                return <About onRouteChange={this.onRouteChange} />
+                return <About onRouteChange={this.onRouteChange}/>
             } else if (this.state.route === 'AllProducts') {
-                return <AllProducts onRouteChange={this.onRouteChange} />
+                return <AllProducts onRouteChange={this.onRouteChange} addToBasket={this.addToBasket}/>
             } else if (this.state.route === 'Contacts') {
                 return <Contacts onRouteChange={this.onRouteChange} />
             } else if (this.state.route === 'Cart') {
-                return <Cart onRouteChange={this.onRouteChange} />
+                if(this.state.productsInCart.length == 0 ) {
+                    return <h2>Jūsų pirkinių krepšelis yra tuščias</h2>
+                } else {
+                    return <Cart onRouteChange={this.onRouteChange} addToBasket={this.addToBasket} deleteItem={this.deleteItem} productList={this.state.productsInCart} />
+
+                }
             }
         }
         return (
@@ -44,9 +73,15 @@ class App extends Component {
                         <li className='listItem' onClick={() => this.onRouteChange('About')}>{'Verslo galimybė'}</li>
                         <li className='listItem' onClick={() => this.onRouteChange('AllProducts')}>{'Produktai'}</li>
                         <li className='listItem floatRight' onClick={() => this.onRouteChange('Contacts')}>{'Kontaktai'}</li>
-                        <li className='listItem floatRight' onClick={() => this.onRouteChange('Cart')}><img style={{ width: '30px', background: 'transparent' }} src={basketIcon} alt={'basket Icon'} /></li>
+                        <li className='listItem floatRight' deleteItem={this.deleteItem} onClick={() => this.onRouteChange('Cart')}>
+                            <div>
+                                <div className="cartItems"><p className="cartText">{this.state.productsInCart.length}</p></div>
+                                <img style={{ width: '30px', background: 'transparent'}} src={basketIcon} alt={'Cart Icon'} />
+                            </div>
+                        </li>
                     </ul>
-                    <img style={{width:'100px', 'paddingTop': '50px', display:'block'}} src={foreverLogo} alt={'Forever Logo'} />
+                    
+                    <img style={{width:'100px', 'paddingTop': '50px', display:'block', 'zIndex':'100'}} src={foreverLogo} alt={'Forever Logo'} />
                 </div>
                 { changePage() }
             </div>
@@ -55,4 +90,3 @@ class App extends Component {
 }
 
 export default App;
-

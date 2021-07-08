@@ -1,10 +1,16 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 .ulStyle {
     list-style-type: none;
     margin: 0;
     padding: 0;
     margin-bottom: 20px;
-    overflow: hidden;
-    background-color: #282c34;
+    /* overflow: hidden; */
+    background-color: white;
     position: fixed;
     width: 100%;
     height: 50px;
@@ -18,11 +24,12 @@
     padding: 14px 16px;
 } */
 .listItem {
-     float: left;
+    float: left;
     display: block;
-    color: white;
+    color: black;
     text-align: center;
     padding: 14px 16px;
+    position: relative;
 }
 
 .floatRight {
@@ -31,11 +38,51 @@
 }
 
 .listItem:hover {
-    background-color: #111;
+    /* background-color: #111; */
     cursor: pointer; 
+    /* text-shadow: 0 0 0.25em black; */
+}
+
+.listItem::before {
+
+    content: '';
+    position: absolute;
+    background: black;
+    top: 5%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: perspective(50px) rotateX(70deg) translateZ(-30px) scale(1, 0.35);
+    filter: blur(30px);
+
 }
 
 /* li:hover {
     background-color: #111;
     cursor: pointer;
 } */
+
+.listItem:hover {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

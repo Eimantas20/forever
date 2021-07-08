@@ -200,27 +200,27 @@ this.setState((state) => ({ prop: state.prop + 1 }));
 
 let products = [
     {
-        a: "ssaddd",
+        a: "pirmas",
         b: "labas",
         c: 46356
     },{
-        a: "ssahgjddd",
+        a: "antras",
         b: "fsdfds",
         c: 465456
     }, {
-        a: "ssaddd",
+        a: "trecias",
         b: "labas",
         c: 46424256
     }, {
-        a: "ssaddd",
+        a: "ketvirtas",
         b: "sdfsdf",
         c: 460056
     }, {
-        a: "ssadfdsfdd",
+        a: "penktas",
         b: "labas",
         c: 46562456
     }, {
-        a: "ssagffdhddd",
+        a: "sestas",
         b: "labas",
         c: 46245356
     }
@@ -250,3 +250,32 @@ const filter = products.filter(product => product.category === "labas");
 {/* {console.log(currentProducts[0] ? currentProducts[0].name : 'fuck')} */ }
 {/* {console.log(currentProducts.name)} */ }
 {/* PAGINATION */ }
+
+
+
+addToBasket = (newArg) => {
+    let productsInCart2 = this.state.productsInCart;
+    let newArg2 = JSON.parse(JSON.stringify(newArg))
+    if (productsInCart2.length == 0) {
+        newArg2.quantity = 1;
+        // productsInCart.push(newArg2);
+        productsInCart2.push(newArg2)
+        this.setState({ productsInCart: productsInCart2 }, () => this.logIt())
+    } else {
+        if (productsInCart2.find(({ id }) => id === newArg2.id)) {
+            this.setState(prevState => {
+                let oldList = Object.assign({}, prevState.quantity);
+                oldList.quantity = oldList.quantity + 1;
+                return { oldList }
+            })
+            // let foundOne = productsInCart2.find(({ id }) => id === newArg2.id)
+            // foundOne.quantity++
+            // this.setState({ productsInCart: foundOne }, () => this.logIt())
+        }
+
+
+        newArg2.quantity++;
+        // console.log(newArg2)
+        this.setState({ productsInCart: productsInCart2 }, () => { this.logIt() })
+    }
+}
