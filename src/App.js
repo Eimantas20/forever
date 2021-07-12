@@ -46,7 +46,7 @@ class App extends Component {
         this.setState({ productsInCart }, () => this.test())
     }
 
-    test = () => {console.log(this.state.productsInCart)}
+    test = () => {console.log(this.state.productsInCart)};
 
     render() {
         const changePage = () => {
@@ -82,7 +82,7 @@ class App extends Component {
                     </ul>
                     
                     <img style={{width:'100px', 'paddingTop': '50px', display:'block', 'zIndex':'100'}} src={foreverLogo} alt={'Forever Logo'} />
-                </div>
+                </div>  
                 { changePage() }
             </div>
         )

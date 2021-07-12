@@ -53,6 +53,10 @@ class AllProducts extends Component {
         // console.log(properciai)
         this.setState({ view: false, fullDescription: properciai})
     }
+
+    goBack = () => {
+        this.setState({view: true})
+    }
     
     render() {    
         const view = this.state.view;
@@ -104,7 +108,7 @@ class AllProducts extends Component {
                             )}
                         </div>
                     </div>
-                :<FullProductDesctiption fullDescription={this.state.fullDescription}/>}
+                :<FullProductDesctiption fullDescription={this.state.fullDescription} goBack={this.goBack} view={this.state.view}/>}
             </div>
         )
     }
