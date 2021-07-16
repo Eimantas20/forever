@@ -57,9 +57,12 @@ class Cart extends Component {
 
     render() {
         return(
-            
-            <div>
-                <div className="cartBox">
+            <div> 
+            {this.state.productsInCart.length == 0 ? (
+                <h2>Jūsų pirkinių krepšelis yra tuščias</h2>
+            ) : (
+                <div>
+                    <div className="cartBox">
                     <h1>Tavo pirkinių krepšelis</h1>
                     {this.props.productList.map(singleProduct => <div className="singleProduct" key={singleProduct.id} >
                         <h1>{singleProduct.name}</h1>
@@ -74,7 +77,7 @@ class Cart extends Component {
                             </div>
                             <button className="deleteProduct" onClick={()=> this.delete(singleProduct)}>Pašalinti prekę</button>
                         </div>
-                    </div>)}
+                </div>)}
 
 
                     <div className="sidePanel">
@@ -87,9 +90,20 @@ class Cart extends Component {
                         <button onClick={this.goToDiscount}>Pirkti</button>
                     </div>
                 </div>
+                </div> 
+            )}
             </div>
-        )
-    }
+                 
+          
+             
+         
+
+        
+          
+            
+        
+ )
+}
 }
 
 export default Cart;

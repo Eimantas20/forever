@@ -278,4 +278,29 @@ addToBasket = (newArg) => {
         // console.log(newArg2)
         this.setState({ productsInCart: productsInCart2 }, () => { this.logIt() })
     }
+}]
+
+
+
+
+
+{
+    (url + "/" + props.singleProduct.id) !== url ?
+    <div className="productBox">
+        <div>
+            <div>
+                <Link to={`${url}/${props.singleProduct.id}`}>
+                    <button>asjdnas</button>
+                    {/* <img onClick={() => props.changeViewButton(props.singleProduct)} className="productImage" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" /> */}
+                    {/* <img className="productImage" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" /> */}
+
+                </Link>
+                <h1 style={{ fontSize: "2rem" }}>{props.singleProduct.name}</h1>
+                <h3 style={{ fontSize: "1rem" }}>{props.singleProduct.description}</h3>
+                <p style={{ margin: "0.2rem" }}>€ {props.singleProduct.price}</p>
+                <button className="orderButton" style={{ backgroundColor: bgColor }} onClick={() => joined(props)}>Užsakyti</button>
+            </div>
+        </div>
+    </div>
+    : null
 }
