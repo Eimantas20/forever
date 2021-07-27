@@ -304,3 +304,19 @@ addToBasket = (newArg) => {
     </div>
     : null
 }
+
+
+
+const fetchItems = async () => {
+    fetch('http://localhost:3000/products')
+        .then((response) => response.json())
+        .then((response) => {
+            let newList = {};
+
+            response.data.forEach(item => {
+                newList[item.id] = item;
+            })
+
+            setItems(newList)
+        })
+}

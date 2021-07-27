@@ -6,38 +6,28 @@ import {
     Link,
     useParams,
     withRouter,
-    useLocation
+    useLocation, 
+    useRouteMatch
 } from "react-router-dom";
 import React, { Component, useState, useEffect } from 'react';
 import AllProducts from './AllProducts';
 import './AllProducts.css';
 
 const CategoryRouter = ({ match }) => {
-    useEffect(() => {
-        fetchItems();
+    // useEffect(() => {
+      
         
-        // console.log(`${match} - This comes from Category Router`)
-    }, []);
+    //     // console.log(`${match} - This comes from Category Router`)
+    // }, []);
 
     const [items, setItems] = useState([]);
 
-    const fetchItems = async () => {
-        const data = await fetch(
-            'http://localhost:3000/products'
-        );
-        const items = await data.json();
-        setItems(items.data);
-        // console.log(items)
-    }
+    let routeMatch = useRouteMatch('/categories/:category/:id');
 
-    // const commingFrom = () => console.log('CategoryRouter');
-    // console.log(items)
     const kategorija = "biciu_produktai"
 
-    return (
-       
+    return !routeMatch ? (
         <div>
-            
                 <nav>
                     <ul className="productNav">
                         <li>
@@ -53,6 +43,7 @@ const CategoryRouter = ({ match }) => {
                         <li><Link to="/categories/higienos_priemones">Higienos priemonės</Link></li>
                     </ul>
                 </nav>
+
                 {/* <Switch>
  
                     <Route path='/categories/:category' exact component={(props) => <AllProducts {...props} key={window.location.pathname} products={items}/>}/>
@@ -82,8 +73,9 @@ const CategoryRouter = ({ match }) => {
                 </Switch> */}
            
         </div>
-        
     )
+     :null
+
 }
 
 export default withRouter(CategoryRouter);

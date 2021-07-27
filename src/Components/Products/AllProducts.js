@@ -37,53 +37,28 @@ class AllProducts extends Component {
     componentDidMount = (props) => {
         // this.setState({ products: this.props.products, selectedCategory: this.props.match.params.category }, () => this.pickCategory())
         this.setState({ products: this.props.products }, () => this.pickCategory());
-
-    }
-
-    testing =()=>{
-        console.log(this.props)
-        console.log(this.props.match.params.category)
+        // console.log(this.props.updateCartItemsCount)
     }
     
-    
-    // componentDidMount = () => {
-    //     fetch('http://localhost:3000/products')
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             this.setState({ products: data.data, selectedCategory: this.props.match.params.category}, () => this.show())
-    //         })
-    // }
     change=()=>this.setState({ selectedCategory: this.props.selectedCategory});
 
-//  show=()=>{
-//      console.log(this.props.match.params.category)
-//  }
-    // show = () => {
-    //     console.log(this.state.products)
-    //     console.log(this.props.products)
-    // }
-    
     pickCategory = () => {
-     
-        // let { products, selectedCategory} = this.state;
         let { products, selectedCategory} = this.state;
-        console.log(`ar is cia??`);
-        // let selectedCategory = this.props.match.params.category
-        // console.log(this.state.products)
-        // console.log(selectedCategory)
+        products = Object.values(products)
+
+// console.log(this.state.products)
+
         let filteredProducts = products.filter((filteringProduct) => {
             if (filteringProduct.url === selectedCategory) { return filteringProduct }
         });
         const currentProducts = filteredProducts.slice(0, 9);
         const productsInCategory = filteredProducts.length;
         this.setState({ filteredProducts, currentProducts, productsInCategory, key: Math.random() });
-        // console.log('AllProducts')
     }
-
 
     onPageChanged = (data) => {
         const { filteredProducts } = this.state;
-        console.log(filteredProducts)
+        // console.log(filteredProducts)
         const { currentPage, totalPages, pageLimit } = data;
         const offset = (currentPage - 1) * pageLimit;
         const currentProducts = filteredProducts.slice(offset, offset + pageLimit);
@@ -100,48 +75,45 @@ class AllProducts extends Component {
     }
 
     render() {
+    
+    //    console.log(this.props)
         // const view = this.state.view;
         const { currentProducts, currentPage, totalPages, filteredProducts, productsInCategory, view } = this.state;
         const headerClass = ['text-dark py-2 pr-4 m-0', currentPage ? 'border-gray border-right' : ''].join(' ').trim();
         return (  
-             !view ?
-                <h1> Whoops nothing there!</h1>
-           
-             :<div>
-                 <div>
-                        
-                        <div>
-                            
-                      
-                                <div>
-                                    <div className="container mb-5">
-                                        <div className="row d-flex flex-row py-5">
-                                            <div className="w-100 px-4 py-5 d-flex flex-row flex-wrap align-items-center justify-content-between">
-                                                <div>
-                                                    {currentProducts.map(singleProduct => <OneProductCard singleProduct={singleProduct} key={singleProduct.id} addToBasket={this.props.addToBasket} changeViewButton={this.changeView} />)}
-                                                </div>
-                                                <div className="d-flex flex-row align-items-center">
-                                                    <h2 className={headerClass}>
-                                                        <strong className="text-secondary">{productsInCategory}</strong> Prekės
-                                                    </h2>
-                                                    {currentPage && (
-                                                        <span className="current-page d-inline-block h-100 pl-4 text-secondary">
-                                                            Puslapis <span className="font-weight-bold">{currentPage}</span> / <span className="font-weight-bold">{totalPages}</span>
-                                                        </span>
-                                                    )}
-                                                </div>
-                                                <div className="d-flex flex-row py-4 align-items-center">
-                                                    <Pagination key={this.state.key} totalRecords={this.state.productsInCategory} pageLimit={9} pageNeighbours={1} onPageChanged={this.onPageChanged} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
+            !(currentProducts.length > 1) ?
+            <div>
+                <h1>Atsiprašome, šiuo metu šių prekių neturime</h1>
+                    <p>Norint pasiteirauti apie prekę, prašome kreiptis elektroninių paštu: <a href="daivagusevaite@gmail.com">daivagusevaite@gmail.com</a> </p>
+            </div>
+            :<div>
+                    <div className="productsContainer">
+                        <div className="isdeliojimas">
+                            {currentProducts.map(singleProduct => <OneProductCard singleProduct={singleProduct} changeQuantities={this.props.changeQuantities} addNCount={this.props.addNCount} key={singleProduct.id} addToBasket={this.props.addToBasket} changeViewButton={this.changeView} updateCartItemsCount={this.props.updateCartItemsCount} />)}
                         </div>
                     </div>
-                     {/* <FullProductDescription fullDescription={this.state.fullDescription} goBack={this.goBack} view={this.state.view} /> */}
-            </div>
+                        <div className="paginationBrowser">
+                            <div>
+                                <h2 className={headerClass}>
+                                    <strong className="text-secondary">{productsInCategory}</strong> Prekės
+                                </h2>
+                            </div>
+                            <div>
+                                {currentPage && (
+                                    <span className="current-page d-inline-block h-100 pl-4 text-secondary">
+                                        Puslapis <span className="font-weight-bold">{currentPage}</span> / <span className="font-weight-bold">{totalPages}</span>
+                                    </span>
+                                 )}  
+                            </div>
+                            <div>
+                                <Pagination key={this.state.key} totalRecords={this.state.productsInCategory} pageLimit={9} pageNeighbours={1} onPageChanged={this.onPageChanged} />
+                            </div>
+                        </div>
+                       
+                    
+             
+           
+          </div>
         )
     }
 }

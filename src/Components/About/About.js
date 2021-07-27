@@ -1,6 +1,18 @@
-import react from 'react';
+import react, {useState, useEffect} from 'react';
 
 const About = () => {
+    const [value, setValue] = useState(
+        localStorage.getItem('myValueInLocalStorage') || '');
+
+
+        useEffect(() => {
+            localStorage.setItem('myValueInLocalStorage', value);
+        }, [value])
+        
+        
+    
+    const onChange = event => setValue(event.target.value);
+
     return (
         <div>
             <h1>{'ABOUT'}</h1>

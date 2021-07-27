@@ -9,18 +9,51 @@
     list-style-type: none;
     cursor: pointer;
     display: inline-block;
-    
 }
 
+.productsContainer {
+    display: inline-flex;
+    width: 900px;
+}
+
+.isdeliojimas {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.willWork {
+    display:inline-flex;
+    flex-direction: row;
+}
 .productBox {
     box-shadow: 5px 8px 15px 4px #888888 ;
     width: 270px;
     height: 400px;
-    display: inline-block;
+    display: block;
     margin-top: 20px;
     padding: 10px;
     margin: 10px;
 }
+
+.pagination {
+    display: flex;
+    text-align: center;
+    margin-left: 30px;
+    align-content: center;
+}
+/* d-flex flex-row align-items-center */
+.paginationBrowser {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: row; 
+
+}
+
 .orderButton{
     width: 100px;
     height: 30px;
@@ -42,18 +75,47 @@
 }
 
 .fullDescription {
-    position: absolute;
-    left: 50%;
-    -webkit-transform: translate(-50%);
-    transform: translate(-50%);
+    /* position: fixed; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    /* position: absolute; */
+    /* left: 50%; */
+    /* -webkit-transform: translate(-50%); */
+    /* transform: translate(-50%); */
     width:60%;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     margin:20px;
-    padding: 0;
-    border: 10px double  darkgoldenrod;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px double  darkgoldenrod;
     border-radius: 1rem;
+}
+
+.mainProductInfo > * {
+    padding-bottom: 3rem;
+}
+.smallerGap > * {
+    padding-bottom: 0;
+}
+
+.mainProductInfo {
+    padding: 2rem;
+    display: flex;
+    /* flex-wrap: nowrap; */
+    align-content: center;
+    align-items: center;
+    flex-direction: column; 
+}
+
+.gridLayout {
+    -ms-display: grid;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 100%;
 }
 
 .fullDescriptionImage {

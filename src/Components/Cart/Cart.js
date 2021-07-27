@@ -1,23 +1,73 @@
 import { object } from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import './cart.css';
 
+
 class Cart extends Component {
+   
     constructor(props) {
         super(props);
+        // console.logs(props)
         this.state = {
-            productsInCart: this.props.productList,
-            price: 0
+            productsInCart: [],
+            price: 0,
+            kebybis: {}
         }
-        // this.deleteItem = this.deleteItem.bind(this);
     }
 
-    goToDiscount = () => console.log(this.props.productList)
+    goToDiscount = () => console.log(this.props.productList);
 
-    componentDidMount = () => {
-        this.genericPriceCalculation();
+    componentDidMount = (props) => {
+        this.gettingCartProducts(props);
     }
 
+    gettingCartProducts = (props) => {
+        let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
+        let newList = [];
+        let newestList = [];
+        let globalItemList = this.props.items;
+
+        let globalItemListLength = Object.keys(globalItemList).length
+        if (globalItemListLength > 0) {
+            console.log(globalItemList)
+            fromLocalStorage.forEach(item => {
+                globalItemList[item.id].quantity = item.quantity
+
+                newList.push(globalItemList[item.id]);
+            })
+            this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
+        }
+    }
+
+    // changeQuantities = (singleProduct, number) => {
+    
+    //     const { productsInCart} = this.state;
+    //     let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+
+    //     if(number == 1) {
+    //       if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity < 10)) {
+    //         let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
+    //         // console.log(currentQuantity)
+    //         oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
+    //         }
+
+    //     } else if (number == -1) {
+    //         if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
+    //             let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
+    //             // console.log(currentQuantity)
+    //             oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
+    //         } 
+
+    //     } else if (number == 100) {
+    //         oldItems.splice(oldItems.findIndex(item=>item.id === singleProduct.id), 1)  
+    //         console.log(oldItems);
+    //     }
+       
+    //     localStorage.setItem('cartItems', JSON.stringify(oldItems))
+    //     this.props.updateCartItemsCount();
+    //     this.gettingCartProducts();
+    // }
 
     genericPriceCalculation = () => {
         const { productsInCart, price } = this.state;
@@ -26,84 +76,74 @@ class Cart extends Component {
             cost += product.quantity * product.price
         })
         this.setState({ price: Math.round(cost * 100) / 100 })
-        // console.log(price)
     }
 
-    increase = (singleProduct) => {
-        if (singleProduct.quantity < 10) {
-            const { productsInCart, price} = this.state;
-            let currentQuantity = productsInCart.find(product => product.id == singleProduct.id).quantity
-            productsInCart.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1;
-            this.setState({ productsInCart }, () => this.genericPriceCalculation())
-            // const cost = price + singleProduct.price;
-            // this.roundUpPrice(cost);
-        }    
-    }
+    // increase = (singleProduct) => {
+    //     if (singleProduct.quantity < 10) {
+    //         const { productsInCart, price} = this.state;
+    //         let currentQuantity = productsInCart.find(product => product.id == singleProduct.id).quantity
+    //         productsInCart.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1;
+    //         this.setState({ productsInCart }, () => this.genericPriceCalculation())
+    //         localStorage.setItem('testing', Math.random())
+    //         // localStorage.setItem('cartItems', JSON.stringify(oldItems))
+    //         // const cost = price + singleProduct.price;
+    //         // this.roundUpPrice(cost);
+    //     }    
+    // }
 
-    decrease = (singleProduct) => {
-        if ( singleProduct.quantity > 1) {
-            const { productsInCart, price } = this.state;
-            let currentQuantity = productsInCart.find(product => product.id == singleProduct.id).quantity
-            productsInCart.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1;
-            this.setState({ productsInCart }, () => this.genericPriceCalculation())
-            // this.roundUpPrice(cost);
-        }  
-    }
+    // decrease = (singleProduct) => {
+    //     if ( singleProduct.quantity > 1) {
+    //         const { productsInCart, price } = this.state;
+    //         let currentQuantity = productsInCart.find(product => product.id == singleProduct.id).quantity
+    //         productsInCart.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1;
+    //         this.setState({ productsInCart }, () => this.genericPriceCalculation())
+    //         // this.roundUpPrice(cost);
+    //     }  
+    // }
 
-    delete = (singleProduct) => {
-        this.props.deleteItem(singleProduct);
-        this.genericPriceCalculation();
-    }
+    // delete = (singleProduct) => {
+    //     this.props.deleteItem(singleProduct);
+    //     this.genericPriceCalculation();
+    // }
 
     render() {
+        console.log('cart.js got rerendered')
         return(
-            <div> 
-            {this.state.productsInCart.length == 0 ? (
-                <h2>Jūsų pirkinių krepšelis yra tuščias</h2>
-            ) : (
+            (this.state.productsInCart.length > 0) ?
                 <div>
                     <div className="cartBox">
                     <h1>Tavo pirkinių krepšelis</h1>
-                    {this.props.productList.map(singleProduct => <div className="singleProduct" key={singleProduct.id} >
-                        <h1>{singleProduct.name}</h1>
-                        <p>€ {singleProduct.price}</p>
-                        <h3>{singleProduct.description}</h3>
-                        <div className="quanities">
-                            <div>
-                                <p style={{display: "inline-block"}}>Kiekis</p>
-                                <button className="incDec" onClick={() => this.decrease(singleProduct)}>-</button>
-                                {singleProduct.quantity}
-                                <button className="incDec" onClick={() => this.increase(singleProduct)}>+</button>
+                    {this.state.productsInCart.map(singleProduct => 
+                        <div className="singleProduct" key={singleProduct.id} >
+                            <h1>{singleProduct.name}</h1>
+                            <p>€ {singleProduct.price}</p>
+                            <h3>{singleProduct.description}</h3>
+                            <div className="quanities">
+                                <div>
+                                    <p style={{display: "inline-block"}}>Kiekis</p>
+                                    <button className="incDec" onClick={() => this.props.changeQuantities(singleProduct, -1)}>-</button>
+                                    {singleProduct.quantity}
+                                    <button className="incDec" onClick={() => this.props.changeQuantities(singleProduct, +1)}>+</button>
+                                </div>
+                                <button className="deleteProduct" onClick={() => this.props.changeQuantities(singleProduct, 100)}>Pašalinti prekę</button>
                             </div>
-                            <button className="deleteProduct" onClick={()=> this.delete(singleProduct)}>Pašalinti prekę</button>
-                        </div>
-                </div>)}
+                        </div>)}
 
 
-                    <div className="sidePanel">
-                        <div>
-                            <h4> Kaina: € {this.state.price}</h4>
+                        <div className="sidePanel">
+                            <div>
+                                <h4> Kaina: € {this.state.price}</h4>
+                            </div>
+                            <br />
+                            <a href="https://registracija.foreverliving.lt/lt/?fbclid=IwAR3li4MXHZeTX36_ASx3XW-239g7a4ldbQAgPSEeO7V6rLaagG_VfIVL8cI">5% nuolaida su registracija</a>
+                            <br />
+                            <button onClick={this.goToDiscount}>Pirkti</button>
                         </div>
-                        <br />
-                        <a href="https://registracija.foreverliving.lt/lt/?fbclid=IwAR3li4MXHZeTX36_ASx3XW-239g7a4ldbQAgPSEeO7V6rLaagG_VfIVL8cI">5% nuolaida su registracija</a>
-                        <br />
-                        <button onClick={this.goToDiscount}>Pirkti</button>
-                    </div>
+                        </div>
                 </div>
-                </div> 
-            )}
-            </div>
-                 
-          
-             
-         
-
-        
-          
-            
-        
- )
-}
+            : <h2>Jūsų pirkinių krepšelis yra tuščias</h2>         
+        )
+    }
 }
 
 export default Cart;
