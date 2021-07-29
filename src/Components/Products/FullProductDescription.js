@@ -1,90 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useReducer } from 'react';
 import { useParams, useRouteMatch } from 'react-router-dom';
+//Initial state for reducer
+// const initialStates = { viewingProduct: {}, viewingProductQuantity: 0 };
+
+
+// const reducer = (initialStates, action) => {
+//     console.log('TRIGERED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+//     console.log(initialStates, action)
+//     let initialStatesProducts = initialStates.viewingProduct;
+//     if (action.type == 'work') {
+//         // return { count: state.count + 1 };
+//         return { initialStatesProducts: action.myProduct}
+
+
+//             // initialStates.viewingProductQuantity: action.kiekis
+//         // } 
+        
+
+//     }
+// }
 
 
 function FullProductDescription(props) {
+    // const [state, dispatch] = useReducer(reducer, initialStates)
+
+
     let { url, match } = useRouteMatch();
+    // const [ myProduct, kiekis] = useReducer(reducer, { viewingProduct: {}, viewingProductQuantity: 0});
     const [viewingProduct, setProduct] = useState({});
     const [viewingProductQuantity, viewProductQuantity] = useState(0);
-    const [bgColor, changeColor] = useState("");
-    const [newQuantity, setQuantity] = useState(0);
     let allProductsFromDB = Object.values(props.products);
     let choosenProductId = parseInt(props.match.params.id);
-    // console.log(parseInt(props.match.params.id))
 
     useEffect(()=> {
-        callMe(props);
+        console.log('mounted');
+        callMe(props)
+        return () => {
+            console.log('unmounted')
+        }
     })
 
- 
-
     const callMe = (props) =>  {
+        console.log(props)
         let productsLength = Object.keys(allProductsFromDB).length;
         if (productsLength > 0) {
             let productsInCartFromLocalStorage = props.productsInCart;
             let kiekis = 0;
             if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId)) {
-                console.log('yra')
-                kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity
-                console.log(kiekis)
-                console.log(productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity)
+                kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity;
             }
-            viewProductQuantity(kiekis);
             let myProduct = allProductsFromDB.find(product => product.id == choosenProductId)
-        
-            
-            // setQuantity(myFuckingProductQuantity)
-            // console.log(myFuckingProduct)
-            // console.log(myProductQuantity)
-            // setQuantity(myProductQuantity)
-        setProduct(myProduct);
-        // viewProductQuantity(myProduct.quantity)
-            // let quantity = () => {
-            //     if (props.productsInCart[props.productsInCart.findIndex(item => item.id === viewingProduct.id)] == undefined ) {
-            //         return 0
-            //     } else {
-            //         props.productsInCart[props.productsInCart.findIndex(item => item.id === viewingProduct.id)]
-            //     }
+            // dispatch({ type: 'work', kiekis, myProduct})
+            viewProductQuantity(kiekis);
+            setProduct(myProduct);
+            // function reducer(viewingProductNQuantity) {
+            //     return ({ viewingProduct: myProduct, viewingProductQuantity: kiekis });
+               
             // }
-                // console.log(quantity)
-        // viewProductQuantity(quantity)
         }
-        // console.log
-      
-        // console.log(viewingProduct);
-        // findProduct(myProduct)
-        // console.log(props.match.params);
-        // console.log(products);
-        // console.log(choosenProductId);
-        // let viewingProduct = products.find(product => product.id == choosenProductId);
-        // console.log(foundThisBastard)
     }
 
-   
 
-    // const addNCount = (props)=> {
-        // console.log(props)
-        // props.addNCount(viewingProduct);
-        // props.addToBasket(viewingProduct)
-        // console.log(props.addToBasket)
-        // console.log(props, viewingProduct);
-        // changeColor(('red'));
-    // }
-//    console.log(viewingProduct)
-    // let {userId} = useParams();
-    // console.log("fullprods got rerendered")
-    // console.log(props.productsInCart[props.productsInCart.findIndex(item => item.id === viewingProduct.id)] || 0)
-    // console.log(viewingProduct)
+  
 
-
-    return viewingProduct ? (
-        
+console.log('rerender fullProductDescription')
+// console.log(initialStates)
+// console.log(viewingProduct)
+    // const { viewingProduct, viewingProductQuantity } = viewingProductNQuantity;
+    return  (
         <div className="fullDescription">
             <div className="gridLayout">
                 <div>
                     <img className="fullDescriptionImage" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" />
                 </div>
                 <div className="mainProductInfo">
+                    {/* <h1>{initialStates.viewingProduct.name}</h1> */}
+
                     <h1>{viewingProduct.name}</h1>
                     <h2>{viewingProduct.id}</h2>
                     <h3>{viewingProduct.category}</h3>
@@ -95,29 +86,17 @@ function FullProductDescription(props) {
                         <p>porciju skaicius</p>
                     </div>
                     <div>
-                        <div>
-                            <p style={{ display: "inline-block" }}>Kiekis</p>
-                            <button className="incDec" onClick={() => props.changeQuantities(viewingProduct, -1)}>-</button>
-                            {viewingProductQuantity}
-                            <button className="incDec" onClick={() => props.changeQuantities(viewingProduct, +1)}>+</button>
-                        </div>
-                        <button className="deleteProduct" onClick={() => props.changeQuantities(viewingProduct, 100)}>Pašalinti prekę</button>
+                        {viewingProductQuantity == 0 ? 
+                            <button className="orderbutton" onClick={() => props.changeQuantities(viewingProduct, 100)}>Į krepšelį</button>    
+                           :<div>
+                                <p style={{ display: "inline-block" }}>Kiekis</p>
+                                <button className="incDec, orderbutton" onClick={() => props.changeQuantities(viewingProduct, -1)}>-</button>
+                                {viewingProductQuantity}
+                                <button className="incDec, orderbutton" onClick={() => props.changeQuantities(viewingProduct, +1)}>+</button><br />
+                                <button className="deleteProduct, orderbutton" onClick={() => props.changeQuantities(viewingProduct, -100)}>Pašalinti prekę</button>
+                            </div>
+                        }           
                     </div>
-                    <button onClick={() => props.changeQuantities(viewingProduct, -100)}>order ME</button>
-
-                    {/* <button onClick={() => addNCount(props, viewingProduct)}>order ME</button> */}
-
-                    {/* <button onClick={() => addNCount(props, viewingProduct)}>order ME</button> */}
-                    {/* <button onClick={() => props.addNCount()}>order ME</button> */}
-                    {/* <div>
-                        <p style={{ display: "inline-block" }}>Kiekis</p>
-                        <button className="incDec" onClick={() => this.addToCart(viewingProduct, -1)}>-</button>
-                        {viewingProduct.quantity}
-                        <button className="incDec" onClick={() => this.addToCart(viewingProduct, +1)}>+</button>
-                    </div>
-                    <button className="deleteProduct" onClick={() => this.addToCart(viewingProduct, 100)}>Pašalinti prekę</button> */}
-
-
                 </div>
             </div>
           
@@ -133,33 +112,7 @@ function FullProductDescription(props) {
             </div>
         </div>
     )
-    :'loading'
+    
 }
 
 export default FullProductDescription;
-
-// import React, { useState } from 'react';
-
-// function FullProductDescription(props) {
-//     const goBack = () => {
-//         props.goBack()
-//     }
-//     function showme() {
-//         console.log('works?')
-//     }
-   
-//     return (
-//         <div className="fullDescription">
-//             <button onClick={goBack}>Grįžti atgal</button>
-//             <img className="fullDescriptionImage" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" />
-//             <div>
-//                 <h3>{props.fullDescription.name}</h3>  
-//                 <h4>€ {props.fullDescription.price}</h4>
-//                 <h4>{props.fullDescription.category}</h4>
-//                 <h4>{props.fullDescription.description}</h4>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default FullProductDescription;

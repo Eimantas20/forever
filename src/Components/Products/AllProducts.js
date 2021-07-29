@@ -46,8 +46,6 @@ class AllProducts extends Component {
         let { products, selectedCategory} = this.state;
         products = Object.values(products)
 
-// console.log(this.state.products)
-
         let filteredProducts = products.filter((filteringProduct) => {
             if (filteringProduct.url === selectedCategory) { return filteringProduct }
         });

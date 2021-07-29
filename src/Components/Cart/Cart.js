@@ -26,9 +26,13 @@ class Cart extends Component {
         let newList = [];
         let newestList = [];
         let globalItemList = this.props.items;
-
+        console.log(globalItemList)
+        console.log(fromLocalStorage)
         let globalItemListLength = Object.keys(globalItemList).length
-        if (globalItemListLength > 0) {
+        console.log(globalItemListLength)
+
+        if (globalItemListLength > 0 && fromLocalStorage !== null) {
+        // if (fromLocalStorage > 0) {
             console.log(globalItemList)
             fromLocalStorage.forEach(item => {
                 globalItemList[item.id].quantity = item.quantity
@@ -38,36 +42,6 @@ class Cart extends Component {
             this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
         }
     }
-
-    // changeQuantities = (singleProduct, number) => {
-    
-    //     const { productsInCart} = this.state;
-    //     let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-
-    //     if(number == 1) {
-    //       if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity < 10)) {
-    //         let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-    //         // console.log(currentQuantity)
-    //         oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
-    //         }
-
-    //     } else if (number == -1) {
-    //         if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
-    //             let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-    //             // console.log(currentQuantity)
-    //             oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
-    //         } 
-
-    //     } else if (number == 100) {
-    //         oldItems.splice(oldItems.findIndex(item=>item.id === singleProduct.id), 1)  
-    //         console.log(oldItems);
-    //     }
-       
-    //     localStorage.setItem('cartItems', JSON.stringify(oldItems))
-    //     this.props.updateCartItemsCount();
-    //     this.gettingCartProducts();
-    // }
 
     genericPriceCalculation = () => {
         const { productsInCart, price } = this.state;
@@ -125,7 +99,7 @@ class Cart extends Component {
                                     {singleProduct.quantity}
                                     <button className="incDec" onClick={() => this.props.changeQuantities(singleProduct, +1)}>+</button>
                                 </div>
-                                <button className="deleteProduct" onClick={() => this.props.changeQuantities(singleProduct, 100)}>Pašalinti prekę</button>
+                                <button className="deleteProduct" onClick={() => this.props.changeQuantities(singleProduct, -100)}>Pašalinti prekę</button>
                             </div>
                         </div>)}
 

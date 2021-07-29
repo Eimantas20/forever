@@ -51,105 +51,35 @@ class App extends Component {
             })
         this.updateCartItemsCount()
     }
-
+   
     updateCartItemsCount = () => {
         let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'))
-        this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length})
-        // this.setState({ })
-        // this.setState({ addedItimQuantity: JSON.parse(localStorage.getItem('cartItems')).length })
-
-    // console.log(this.state.items) 
-    }
-    setBoth =()=>{
-        this.selectingCategory();
-        this.commingFrom();
-
-    }
-    selectingCategory =()=>{
-        this.setState({ selectedCategory: this.props.match.params.category })
-    }
-    onRouteChange = (newRoute) => {
-        this.setState({route: newRoute});  
-    }
-
-    addNCount = (props) => {
-        this.addToCart(props);
-        console.log(props)
-        this.updateCartItemsCount()
-    }
-    addToCart = (props) => {
-        console.log(props)
-        let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        // console.log(oldItems)
-
-        if (!oldItems.find(product => product.id == props.id)) {
-            let newItem = {
-                'id': props.id,
-                'quantity': 1
-            };
-            oldItems.push(newItem);
-
-        } else if (oldItems.find(product => product.id == props.id && product.quantity < 10)) {
-            let currentQuantity = oldItems.find(product => product.id == props.id).quantity;
-            oldItems.find(product => product.id == props.id).quantity = currentQuantity + 1
-
-        }
-        localStorage.setItem('cartItems', JSON.stringify(oldItems))
+        if (itemsInsideLocalStorage) 
+            this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length})
     }
     
-    addToBasket = (newArg, evt) => {
-        console.log('hitina addToBasket funkcija')
-        
-        const {productsInCart} = this.state;
-        if (!productsInCart.find(product => product.id == newArg.id) ) {
-            newArg.quantity = 1;
-            productsInCart.push(newArg)
-            this.setState({ productsInCart });
-        } else if (productsInCart.find(product => product.id == newArg.id && product.quantity < 10) ) {
-            let currentQuantity = productsInCart.find(product => product.id == newArg.id).quantity
-            productsInCart.find(product => product.id == newArg.id).quantity = currentQuantity + 1;
-            this.setState({ productsInCart});
-        }
-    }
-
-    deleteItem = (singleProduct) => {
-        const { productsInCart } = this.state;
-        let index = productsInCart.findIndex(product => product.id == singleProduct.id);
-        if (index !== -1) {
-            productsInCart.splice(index, 1)
-        }
-        this.setState({ productsInCart })
-    }
-    commingFrom = () => console.log('App');
+    
 
     changeQuantities = (singleProduct, number) => {
-        console.log(singleProduct, number)
-        const { productsInCart } = this.state;
         let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-
         if (number == 1) {
-            if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity < 10)) {
+            if (oldItems.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
                 let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                // console.log(currentQuantity)
                 oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
             }
 
         } else if (number == -1) {
             if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
                 let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                // console.log(currentQuantity)
                 oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
             }
 
-        } else if (number == 100) {
+        } else if (number == -100) {
             if (oldItems.findIndex(item => item.id === singleProduct.id) > -1) {
-                console.log(oldItems.findIndex(item => item.id === singleProduct.id), 1)
                 oldItems.splice(oldItems.findIndex(item => item.id === singleProduct.id), 1)
-                // console.log(oldItems);
             }
            
-        } else if (number == -100) {
+        } else if (number == 100) {
             if (!oldItems.find(product => product.id == singleProduct.id)) {
                 let newItem = {
                     'id': singleProduct.id,
@@ -160,9 +90,7 @@ class App extends Component {
             } else if (oldItems.find(product => product.id == singleProduct.id && product.quantity < 10)) {
                 let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
                 oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
-
             }
-            
         }
         localStorage.setItem('cartItems', JSON.stringify(oldItems))
         this.setState({ itemsInsideBasket: JSON.stringify(oldItems) })
@@ -178,13 +106,10 @@ class App extends Component {
 
         let globalItemListLength = Object.keys(globalItemList).length
         if (globalItemListLength > 0) {
-            console.log(globalItemList)
             fromLocalStorage.forEach(item => {
                 globalItemList[item.id].quantity = item.quantity
-
                 newList.push(globalItemList[item.id]);
             })
-            console.log(newList)
             this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
         }
     }
@@ -199,6 +124,7 @@ class App extends Component {
     }
 
     render() {
+        console.log('rerender App.js')
     //    let cartItemCount =JSON.parse(localStorage.getItem('cartItems')).length - 1;
         // console.log(this.state.cartItemCount.length || 0)
         return (
