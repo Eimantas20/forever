@@ -17,26 +17,20 @@ class Cart extends Component {
 
     goToDiscount = () => console.log(this.props.productList);
 
-    componentDidMount = (props) => {
+    componentWillMount = (props) => {
         this.gettingCartProducts(props);
     }
 
     gettingCartProducts = (props) => {
         let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-        let newList = [];
-        let newestList = [];
         let globalItemList = this.props.items;
         console.log(globalItemList)
-        console.log(fromLocalStorage)
+        let newList = [];
         let globalItemListLength = Object.keys(globalItemList).length
-        console.log(globalItemListLength)
-
         if (globalItemListLength > 0 && fromLocalStorage !== null) {
         // if (fromLocalStorage > 0) {
-            console.log(globalItemList)
-            fromLocalStorage.forEach(item => {
+            fromLocalStorage.map(item => {
                 globalItemList[item.id].quantity = item.quantity
-
                 newList.push(globalItemList[item.id]);
             })
             this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
@@ -89,11 +83,13 @@ class Cart extends Component {
                     <h1>Tavo pirkinių krepšelis</h1>
                     {this.state.productsInCart.map(singleProduct => 
                         <div className="singleProduct" key={singleProduct.id} >
+                            <h1>{singleProduct.id}</h1>
                             <h1>{singleProduct.name}</h1>
                             <p>€ {singleProduct.price}</p>
                             <h3>{singleProduct.description}</h3>
                             <div className="quanities">
                                 <div>
+                                <button onClick={()=> this.props.skaiciuok()}>skaiciuok</button>
                                     <p style={{display: "inline-block"}}>Kiekis</p>
                                     <button className="incDec" onClick={() => this.props.changeQuantities(singleProduct, -1)}>-</button>
                                     {singleProduct.quantity}

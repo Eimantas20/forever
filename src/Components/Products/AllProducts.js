@@ -35,9 +35,8 @@ class AllProducts extends Component {
     }
 
     componentDidMount = (props) => {
-        // this.setState({ products: this.props.products, selectedCategory: this.props.match.params.category }, () => this.pickCategory())
+        console.log('pasileidzia')
         this.setState({ products: this.props.products }, () => this.pickCategory());
-        // console.log(this.props.updateCartItemsCount)
     }
     
     change=()=>this.setState({ selectedCategory: this.props.selectedCategory});
@@ -73,13 +72,13 @@ class AllProducts extends Component {
     }
 
     render() {
-    
+
     //    console.log(this.props)
         // const view = this.state.view;
         const { currentProducts, currentPage, totalPages, filteredProducts, productsInCategory, view } = this.state;
         const headerClass = ['text-dark py-2 pr-4 m-0', currentPage ? 'border-gray border-right' : ''].join(' ').trim();
         return (  
-            !(currentProducts.length > 1) ?
+            !(currentProducts.length > 0) ?
             <div>
                 <h1>Atsiprašome, šiuo metu šių prekių neturime</h1>
                     <p>Norint pasiteirauti apie prekę, prašome kreiptis elektroninių paštu: <a href="daivagusevaite@gmail.com">daivagusevaite@gmail.com</a> </p>
@@ -87,7 +86,7 @@ class AllProducts extends Component {
             :<div>
                     <div className="productsContainer">
                         <div className="isdeliojimas">
-                            {currentProducts.map(singleProduct => <OneProductCard singleProduct={singleProduct} changeQuantities={this.props.changeQuantities} addNCount={this.props.addNCount} key={singleProduct.id} addToBasket={this.props.addToBasket} changeViewButton={this.changeView} updateCartItemsCount={this.props.updateCartItemsCount} />)}
+                            {currentProducts.map(singleProduct => <OneProductCard singleProduct={singleProduct} changeQuantities={this.props.changeQuantities} key={singleProduct.id} changeViewButton={this.changeView} />)}
                         </div>
                     </div>
                         <div className="paginationBrowser">

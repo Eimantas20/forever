@@ -443,3 +443,178 @@ function FullProductDescription(props) {
 }
 
 export default FullProductDescription;
+
+
+
+import * as React from "react";
+
+export default class Parent extends React.Component {
+    state = {
+        name: "Thor",
+        home: "Asgard",
+        count: 0
+    };
+
+    skaiciuok = () => this.setState({ count: this.state.count + 1 });
+
+    render() {
+        return (
+            <div>
+                <p>
+                    Change Parent State - <br />
+                    Name:{" "}
+                    <input
+                        type={"text"}
+                        value={this.state.name}
+                        onChange={(e) => this.setState({ name: e.target.value })}
+                    />
+                    <br />
+                    home:{" "}
+                    <input
+                        type={"text"}
+                        value={this.state.home}
+                        onChange={(e) => this.setState({ home: e.target.value })}
+                    />
+                </p>
+                <Child
+                    parentState={this.state}
+                    skaiciuok={this.skaiciuok}
+                    count={this.state.count}
+                />
+            </div>
+        );
+    }
+}
+
+class Child extends React.Component {
+    state = {
+        brother: "Loki",
+        job: "Being Awesome",
+        skaicius: 0
+    };
+
+    skaiciuok = () => this.setState({ skaicius: this.state.skaicius + 1 });
+
+    render() {
+        return (
+            <div>
+                <p>
+                    Change Child State - <br />
+                    Brother:{" "}
+                    <input
+                        type={"text"}
+                        value={this.state.brother}
+                        onChange={(e) => this.setState({ brother: e.target.value })}
+                    />
+                    <br />
+                    Job:{" "}
+                    <input
+                        type={"text"}
+                        value={this.state.job}
+                        onChange={(e) => this.setState({ job: e.target.value })}
+                    />
+                </p>
+                <p>
+                    (Parent State Passed to Child) <br />
+                    Name: {this.props.parentState.name} <br />
+                    Home: {this.props.parentState.home}
+                </p>
+                <p>
+                    (Child State) <br />
+                    Brother: {this.state.brother} <br />
+                    Job: {this.state.job}
+                    <button onClick={this.props.skaiciuok}>parent counte</button><br />
+                    <p>{this.props.count}</p>
+                    <button onClick={this.skaiciuok}>child counte</button><br />
+                    <p>{this.state.skaicius}</p>
+                </p>
+            </div>
+        );
+    }
+}
+
+==============================================================
+import * as React from "react";
+import {useState} from 'react';
+
+export default class Parent extends React.Component {
+  state = {
+    name: "Thor",
+    home: "Asgard",
+    count: 0
+  };
+
+  skaiciuok = () => this.setState({ count: this.state.count + 1 });
+
+  render() {
+    return (
+      <div>
+        <p>
+          Change Parent State - <br />
+          Name:{" "}
+          <input
+            type={"text"}
+            value={this.state.name}
+            onChange={(e) => this.setState({ name: e.target.value })}
+          />
+          <br />
+          home:{" "}
+          <input
+            type={"text"}
+            value={this.state.home}
+            onChange={(e) => this.setState({ home: e.target.value })}
+          />
+        </p>
+        <Child
+          parentState={this.state}
+          skaiciuok={this.skaiciuok}
+          count={this.state.count}
+        />
+      </div>
+    );
+  }
+}
+function Child(props) {
+    const [brother, setName] = useState("Loki");
+    const [job, setJob] = useState("Being Awesome");
+    const [number, setNumber] = useState(0)
+
+  const skaiciuok = () => setNumber(number + 1 );
+
+
+    return (
+      <div>
+        <p>
+          Change Child State - <br />
+          Brother:{" "}
+          <input
+            type={"text"}
+            value={brother}
+            onChange={(e) => setName({ brother: e.target.value })}
+          />
+          <br />
+          Job:{" "}
+          <input
+            type={"text"}
+            value={job}
+            onChange={(e) => setJob({ job: e.target.value })}
+          />
+        </p>
+        <p>
+          (Parent State Passed to Child) <br />
+          Name: {props.parentState.name} <br />
+          Home: {props.parentState.home}
+        </p>
+        <p>
+          (Child State) <br />
+          Brother: {brother} <br />
+          Job: {job}<br />
+          <button onClick={props.skaiciuok}>parent counte</button><br />
+          <p>{props.count}</p>
+          <button onClick={skaiciuok}>child counter</button><br />
+          <p>{number}</p>
+        </p>
+      </div>
+    );
+  }
+
