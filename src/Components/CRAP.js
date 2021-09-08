@@ -618,3 +618,8 @@ function Child(props) {
     );
   }
 
+
+   background-image: url(../img/arrow.jpg), -moz-linear-gradient(top, #E5E5E5, #F4F4F4); /* For old Firefox (3.6 to 15) */
+    background-image: url(../img/arrow.jpg), -ms-linear-gradient(top, #E5E5E5, #F4F4F4); /* For pre-releases of Internet Explorer  10*/
+    background-image: url(../img/arrow.jpg), -o-linear-gradient(top, #E5E5E5, #F4F4F4); /* For old Opera (11.1 to 12.0) */
+    background-image: url(../img/arrow.jpg), linear-gradient(to bottom, #E5E5E5, #F4F4F4); /* Standard syntax; must be last */

@@ -36,7 +36,7 @@ function FullProductDescription(props, startValue) {
             setViewingProductQuantity(kiekis || 0)
         }
     }
-
+console.log(props)
     return (viewingProduct?
         <div className="fullDescription">
             <div className="gridLayout">
@@ -50,17 +50,17 @@ function FullProductDescription(props, startValue) {
                     <h3>{viewingProduct.description}</h3> 
                     <div className="smallerGap">
                         <p>Kiekis</p>
-                        <p>porciju skaicius</p> {props.clicked}
+                        <p>Porcijų skaičius</p> 
                     </div>
                     <div>
                         {viewingProductQuantity < 1 ?
-                            <button className="orderbutton" onClick={() => props.changeQuantities(viewingProduct, 100)}>Į krepšelį</button>    
+                            <button className="deleteOrderButton" onClick={() => props.changeQuantities(viewingProduct, 100)}>Į krepšelį</button>
                            :<div>
                                <p style={{ display: "inline-block" }}>Kiekis</p>
-                                <button className="incDec, orderbutton" onClick={() => props.changeQuantities(viewingProduct, -1)}>-</button>
+                                <button className="incDec" onClick={() => props.changeQuantities(viewingProduct, -1)}>-</button>
                                 {viewingProductQuantity}
-                                <button className="incDec, orderbutton" onClick={() => props.changeQuantities(viewingProduct, +1)}>+</button><br />
-                                <button className="deleteProduct, orderbutton" onClick={() => props.changeQuantities(viewingProduct, -100)}>Pašalinti prekę</button>
+                                <button className="incDec" onClick={() => props.changeQuantities(viewingProduct, +1)}>+</button><br />
+                                <button className="deleteOrderButton" onClick={() => props.changeQuantities(viewingProduct, -100)}>Pašalinti prekę</button>
                             </div>
                         }
                     </div>

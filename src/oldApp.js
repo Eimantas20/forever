@@ -1,11 +1,11 @@
 import React, { Component, useEffect } from 'react';
-import {
-    BrowserRouter as Router,
+import { 
+    BrowserRouter as Router, 
     Switch,
     Route,
     Link,
     useRouteMatch
-} from 'react-router-dom';
+ } from 'react-router-dom';
 import './App.css';
 import Random from './Components/NavigationBar/NavigationBar.js';
 import About from './Components/About/About.js';
@@ -19,62 +19,56 @@ import facebook from './img/facebook.png';
 import instagram from './img/instagram.png';
 import '../src/Components/NavigationBar/NavigationBar.css';
 import './App.css';
-import TestingFlickeringProduct from './Components/Products/testingFuckingFlickeringProduct.js';
 
 import OneProductCard from './Components/Products/OneProductCard';
 import CategoryRouter from './Components/Products/CategoryRouter.js';
 import FullProductDescription from './Components/Products/FullProductDescription.js'
 import { render } from '@testing-library/react';
-import TestingFlickering from './Components/About/testingFlickering.js';
 
 
 class App extends Component {
     constructor(props) {
         super(props);
+        this.changeQuantities = this.changeQuantities.bind(this);
         this.state = {
             route: '',
             productsInCart: [],
             items: [],
             cartItemCount: 0,
-            clicked: 1,
-            count: 0
-            // productsInCart: []
+            clicked: 1       
         }
     }
     // Be sito routas irgi lyg veikia, bet po refresho state su produktais nusinulina ir sauna i if'a :/ nzn kaip bus su krepseliu
-    componentWillMount = () => {
-        console.log('fuckingApp.js componentDidMount');
+    componentDidMount = () => {
+        console.log('App.js');
         fetch('http://localhost:3000/products')
             .then((response) => response.json())
             .then((response) => {
-                let productsFromDB = {};
-                let newList = [];
-
+                let newList = {};
+              
                 response.data.forEach(item => {
-                    productsFromDB[item.id] = item;
+                    newList[item.id] = item;
                 })
-                let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-                oldItems.forEach(item => {
-                    productsFromDB[item.id].quantity = item.quantity
-                    newList.push(productsFromDB[item.id]);
-                })
-                // this.setState({ items: newList, productsInCart: JSON.parse(localStorage.getItem('cartItems')) || []}, () => console.log(this.state.items))
-                this.setState({ items: productsFromDB, productsInCart: newList }, () => this.updateCartItemsCount())
-
+                this.setState({items: newList})
             })
-        // this.updateCartItemsCount()
+        this.updateCartItemsCount()
+    }
+   
+    newTestFunction = () => {
+        console.log('newTestFunction trigered');
+        this.setState({ clicked: this.state.clicked + 1 }, () => console.log(this.state.clicked))
     }
 
-    skaiciuok = () => this.setState({ count: this.state.count + 1 });
+    updateCartItemsCount = () => {
+        let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'))
+        if (itemsInsideLocalStorage) 
+            this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length})
+    }
+    
     
 
     changeQuantities = (singleProduct, number) => {
-        console.log('changeQuantities from fuckinApp.js has started')
         let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        let newList = [];
-        let globalItemList = this.state.items;
-        let globalItemListLength = Object.keys(globalItemList).length;
-        let cost = 0;
         if (number == 1) {
             if (oldItems.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
                 let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
@@ -90,9 +84,8 @@ class App extends Component {
         } else if (number == -100) {
             if (oldItems.findIndex(item => item.id === singleProduct.id) > -1) {
                 oldItems.splice(oldItems.findIndex(item => item.id === singleProduct.id), 1)
-                console.log(oldItems)
             }
-
+           
         } else if (number == 100) {
             if (!oldItems.find(product => product.id == singleProduct.id)) {
                 let newItem = {
@@ -106,76 +99,40 @@ class App extends Component {
                 oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
             }
         }
+        localStorage.setItem('cartItems', JSON.stringify(oldItems))
+        this.setState({ itemsInsideBasket: JSON.stringify(oldItems) })
+        this.updateCartItemsCount();
+        this.gettingCartProducts();
+    }
 
+    gettingCartProducts = (props) => {
+
+        let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
+        let newList = [];
+        let globalItemList = this.state.items;
+
+        let globalItemListLength = Object.keys(globalItemList).length
         if (globalItemListLength > 0) {
-            console.log(oldItems)
-            //reik idet catcha jei nesufaidina ID nes kitaip objekta visvien ipushina i newList ir paskui bybis veikia
-            oldItems.forEach(item => {
+            fromLocalStorage.forEach(item => {
                 globalItemList[item.id].quantity = item.quantity
                 newList.push(globalItemList[item.id]);
             })
-   
-            newList.forEach(product => {
-                cost += product.quantity * product.price
-            })
-            
+            this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
         }
-        if (oldItems) 
-            console.log('paleido ir sita')
-            localStorage.setItem('cartItems', JSON.stringify(oldItems))
-            this.setState({ price: Math.round(cost * 100) / 100, productsInCart: newList, itemsInsideBasket: JSON.stringify(oldItems), cartItemCount: oldItems.length  })
-        
-
     }
 
-    // gettingCartProducts = (props) => {
-
-    //     let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-    //     let newList = [];
-    //     let globalItemList = this.state.items;
-
-    //     let globalItemListLength = Object.keys(globalItemList).length
-    //     if (globalItemListLength > 0) {
-    //         fromLocalStorage.forEach(item => {
-    //             globalItemList[item.id].quantity = item.quantity
-    //             newList.push(globalItemList[item.id]);
-    //         })
-    //         // this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
-    //         // this.setState({ productsInCart: newList })
-          
-    //             // const { productsInCart, price } = this.state;
-    //             let cost = 0;
-    //             newList.forEach(product => {
-    //                 cost += product.quantity * product.price
-    //             })
-    //         this.setState({ price: Math.round(cost * 100) / 100, productsInCart: newList })
-            
-
-    //     }
-    // }
-    // genericPriceCalculation = () => {
-    //     const { productsInCart, price } = this.state;
-    //     let cost = 0;
-    //     productsInCart.forEach(product => {
-    //         cost += product.quantity * product.price
-    //     })
-    //     this.setState({ price: Math.round(cost * 100) / 100 })
-    // }
-
-    updateCartItemsCount = () => {
-        console.log('isijunge updateCartItemsCount is fuckingApp.js as componentDidMount CallBack function');
-        console.log(this.state.items);
-        let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-        
-        if (itemsInsideLocalStorage)
-            // this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length })
-            this.setState({cartItemCount: itemsInsideLocalStorage.length })
-
+    genericPriceCalculation = () => {
+        const { productsInCart, price } = this.state;
+        let cost = 0;
+        productsInCart.forEach(product => {
+            cost += product.quantity * product.price
+        })
+        this.setState({ price: Math.round(cost * 100) / 100 })
     }
 
     render() {
-        console.log('rerender fuckingApp.js')
-        //    let cartItemCount =JSON.parse(localStorage.getItem('cartItems')).length - 1;
+        console.log('rerender App.js')
+    //    let cartItemCount =JSON.parse(localStorage.getItem('cartItems')).length - 1;
         // console.log(this.state.cartItemCount.length || 0)
         return (
             <Router>
@@ -186,7 +143,7 @@ class App extends Component {
                                 <Link to="/">Pradžia</Link>
                             </li>
                             <li className='listItem'>
-                                <Link to="/about">Verslo galimybė</Link>
+                                <Link to="/About">Verslo galimybė</Link>
                             </li>
                             <li className='listItem'>
                                 <Link to="/categories/">Produktai</Link>
@@ -202,36 +159,26 @@ class App extends Component {
 
                                         <img style={{ width: '30px', background: 'transparent' }} src={basketIcon} alt={'Cart Icon'} />
                                     </div>
-                                </Link>
+                                </Link>  
                             </li>
                         </ul>
-                    </nav>
-                    <img style={{ width: '100px', 'paddingTop': '50px', display: 'block', 'zIndex': '100' }} src={foreverLogo} alt={'Forever Logo'} />
+                    </nav>      
+                    <img style={{width:'100px', 'paddingTop': '50px', display:'block', 'zIndex':'100'}} src={foreverLogo} alt={'Forever Logo'} />
                     <Route path="/" exact>
                         <Home />
                     </Route>
-                    <Route path="/about/:category/:id" component={(props) => <TestingFlickeringProduct  skaiciuok={this.skaiciuok} count={this.state.count}/>} />
-                    <Route path="/about/testingFlickering">
-                        <TestingFlickering skaiciuok={this.skaiciuok} count={this.state.count} products={this.state.items} />
-                    </Route> 
-
-                    {/* <Route strict exact path="/about/testingFlickering" component={() => <TestingFlickering changeQuantities={this.changeQuantities} skaiciuok={this.skaiciuok} count={this.state.count} products={this.state.items} /> }/> */}
-
-                    <Route exact strict path="/about">
-                        <About skaiciuok={this.skaiciuok} count={this.state.count}/>
+                    <Route path="/about">
+                        <About />
                     </Route>
 
-                    <Route strict path="/categories/" render={(props) => <CategoryRouter stocks={this.state.productsInCart} />} />
-                    {/* <Route path="/categories/:category/:id">
-                        <FullProductDescription skaiciuok={this.skaiciuok} changeQuantities={this.changeQuantities} products={this.state.items}/>
-                    </Route> */}
-                    <Route path="/categories/:category/:id" render={(props) => <FullProductDescription {...props} skaiciuok={this.skaiciuok} changeQuantities={this.changeQuantities} products={this.state.items} productsInCart={this.state.productsInCart} />} />
-                    <Route exact strict path='/categories/:category' render={props => <AllProducts changeQuantities={this.changeQuantities}  key={window.location.pathname} products={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
-
+                    <Route strict path="/categories/" component={(props) => <CategoryRouter  stocks={this.state.productsInCart} />} />
+                    <Route path="/categories/:category/:id" component={(props) => <FullProductDescription {...props} newTestFunction={this.newTestFunction} clicked={this.state.clicked} changeQuantities={this.changeQuantities} productsInCart={this.state.productsInCart} genericPriceCalculation={this.genericPriceCalculation}  addNCount={this.addNCount} addToBasket={this.addToBasket} products={this.state.items} />} />
+                    <Route exact strict path='/categories/:category' component={(props) => <AllProducts changeQuantities={this.changeQuantities} addNCount={this.addNCount} key={window.location.pathname} products={this.state.items} addToBasket={this.addToBasket} updateCartItemsCount={this.updateCartItemsCount} />} />
+                    
                     <Route path="/Contacts">
                         <Contacts kintamasis="pirmasis" />
                     </Route>
-                    <Route path="/Cart" component={(props) => <Cart changeQuantities={this.changeQuantities} skaiciuok={this.skaiciuok} addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} productList={this.state.productsInCart} updateCartItemsCount={this.updateCartItemsCount} />} />
+                    <Route path="/Cart" component={(props) => <Cart changeQuantities={this.changeQuantities} genericPriceCalculation={this.genericPriceCalculation} addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} productList={this.state.productsInCart} updateCartItemsCount={this.updateCartItemsCount} />} />
                     {/* <Route path="/Cart">
                         <Cart addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items}  productList={this.state.productsInCart} />
                     </Route> */}
@@ -243,35 +190,49 @@ class App extends Component {
                                 <Link to="/About">Verslo galimybė</Link>
                                 <a href="#">Siuntimas</a>
                                 <div className="breakAfter">
-                                    <Link to="/Contacts">Kontaktai</Link>
-                                    <a href="daivagusevaite@gmail.com"><img style={{ width: '30px', marginLeft: '10px' }} src={mailIcon} alt={'Mail Icon'} /></a>
+                                    <Link to="/Contacts">Kontaktai</Link>  
+                                    <a href="daivagusevaite@gmail.com"><img style={{ width: '30px', marginLeft: '10px'}} src={mailIcon} alt={'Mail Icon'} /></a>
                                     <a href="https://www.facebook.com/groups/152164343511570"><img style={{ width: '30px', marginLeft: '10px' }} src={facebook} alt={'Facebook icon'} /></a>
                                     <a href="https://www.instagram.com/daivagusevaite/?hl=en"><img style={{ width: '30px', marginLeft: '10px' }} src={instagram} alt={'Instagram icon'} /></a>
                                 </div>
                                 <div className="break"></div>
-
+                               
                                 <p> © 2021 Visos teisės saugomos</p>
                             </div>
-
-
-                        </footer>
+                            
+                           
+                        </footer>                  
                     </div>
                 </div>
-            </Router>
+           </Router>
         )
     }
 }
 
 class Home extends Component {
+   
+    
     render() {
 
-        return (
+        return(
             <div>
                 <h1>Home2</h1>
             </div>
         )
     }
+        
+}
 
+
+
+const House =(props) => {
+   let {path, url} = useRouteMatch();
+
+    return(
+        <h1>Like so</h1>
+       
+    )
+   
 }
 
 export default App;

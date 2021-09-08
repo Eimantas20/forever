@@ -70,6 +70,26 @@ class AllProducts extends Component {
     goBack = () => {
         this.setState({ view: true })
     }
+    testvalue =()=> {
+        const sort = document.getElementById('sortBy').value
+        if (sort == 'priceUp') {
+           const newList = this.state.currentProducts.sort(function(a, b) {
+            return a.price - b.price
+        })
+            this.setState({ currentProducts: newList })
+
+        }else if (sort == 'priceDown') {
+            const newList = this.state.currentProducts.sort(function (a, b) {
+                return b.price - a.price
+            })
+            this.setState({ currentProducts: newList})
+
+
+        }
+    }
+
+    
+        
 
     render() {
 
@@ -84,6 +104,15 @@ class AllProducts extends Component {
                     <p>Norint pasiteirauti apie prekę, prašome kreiptis elektroninių paštu: <a href="daivagusevaite@gmail.com">daivagusevaite@gmail.com</a> </p>
             </div>
             :<div>
+                <div className="sorting">
+                    <label>Pasirinkite rūšiavimą</label><br />
+                        <select id="sortBy" name="price" size="1" onChange={()=>this.testvalue()}>
+                            <option value="">pasirinkite</option>
+                            <option value="priceUp">Kaina didėjanti</option>
+                            <option value="priceDown">Kaina mažėjanti</option>
+                        </select>
+                        <br />
+                </div>
                     <div className="productsContainer">
                         <div className="isdeliojimas">
                             {currentProducts.map(singleProduct => <OneProductCard singleProduct={singleProduct} changeQuantities={this.props.changeQuantities} key={singleProduct.id} changeViewButton={this.changeView} />)}
@@ -106,10 +135,7 @@ class AllProducts extends Component {
                                 <Pagination key={this.state.key} totalRecords={this.state.productsInCategory} pageLimit={9} pageNeighbours={1} onPageChanged={this.onPageChanged} />
                             </div>
                         </div>
-                       
-                    
-             
-           
+
           </div>
         )
     }

@@ -1,24 +1,28 @@
 import React, { Component, useEffect } from 'react';
-import { 
-    BrowserRouter as Router, 
+import {
+    BrowserRouter as Router,
     Switch,
     Route,
     Link,
     useRouteMatch
- } from 'react-router-dom';
+} from 'react-router-dom';
 import './App.css';
 import Random from './Components/NavigationBar/NavigationBar.js';
-import About from './Components/About/About.js';
+import BusinessOpportunity from './Components/businessOpportunity/BusinessOpportunity.js';
 import AllProducts from './Components/Products/AllProducts.js';
 import Contacts from './Components/Contacts/Contacts.js';
 import Cart from './Components/Cart/Cart.js';
 import foreverLogo from './Infinity.png';
 import basketIcon from './img/basket-icon.png';
+import hamburgerIcon from './img/hamburger_icon.png'
 import mailIcon from './img/mail.png';
 import facebook from './img/facebook.png';
 import instagram from './img/instagram.png';
+import Aloe from './img/Aloe.jpg';
+import profilePic from './img/profilePic.jpg';
 import '../src/Components/NavigationBar/NavigationBar.css';
 import './App.css';
+import Checkout from './Components/Checkout/Checkout.js';
 
 import OneProductCard from './Components/Products/OneProductCard';
 import CategoryRouter from './Components/Products/CategoryRouter.js';
@@ -29,46 +33,45 @@ import { render } from '@testing-library/react';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.changeQuantities = this.changeQuantities.bind(this);
         this.state = {
             route: '',
             productsInCart: [],
             items: [],
             cartItemCount: 0,
-            clicked: 1       
+            clicked: 1,
+            count: 0,
+            paragraphs: ''
+            // productsInCart: []
         }
     }
-    // Be sito routas irgi lyg veikia, bet po refresho state su produktais nusinulina ir sauna i if'a :/ nzn kaip bus su krepseliu
     componentDidMount = () => {
-        console.log('App.js');
         fetch('http://localhost:3000/products')
             .then((response) => response.json())
             .then((response) => {
-                let newList = {};
-              
+                const paragraphs = response.text[0];
+                let productsFromDB = {};
+                let newList = [];
                 response.data.forEach(item => {
-                    newList[item.id] = item;
+                    productsFromDB[item.id] = item;
                 })
-                this.setState({items: newList})
-            })
-        this.updateCartItemsCount()
-    }
-   
-    newTestFunction = () => {
-        console.log('newTestFunction trigered');
-        this.setState({ clicked: this.state.clicked + 1 }, () => console.log(this.state.clicked))
+                let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                oldItems.forEach(item => {
+                    productsFromDB[item.id].quantity = item.quantity
+                    newList.push(productsFromDB[item.id]);
+                })
+                this.setState({ items: productsFromDB, productsInCart: newList, paragraphs }, () => this.updateCartItemsCount())
+            })        
     }
 
-    updateCartItemsCount = () => {
-        let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'))
-        if (itemsInsideLocalStorage) 
-            this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length})
-    }
-    
     
 
     changeQuantities = (singleProduct, number) => {
+        console.log('changeQuantities from fuckinApp.js has started')
         let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let newList = [];
+        let globalItemList = this.state.items;
+        let globalItemListLength = Object.keys(globalItemList).length;
+        let cost = 0;
         if (number == 1) {
             if (oldItems.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
                 let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
@@ -84,8 +87,9 @@ class App extends Component {
         } else if (number == -100) {
             if (oldItems.findIndex(item => item.id === singleProduct.id) > -1) {
                 oldItems.splice(oldItems.findIndex(item => item.id === singleProduct.id), 1)
+                console.log(oldItems)
             }
-           
+
         } else if (number == 100) {
             if (!oldItems.find(product => product.id == singleProduct.id)) {
                 let newItem = {
@@ -99,140 +103,167 @@ class App extends Component {
                 oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
             }
         }
-        localStorage.setItem('cartItems', JSON.stringify(oldItems))
-        this.setState({ itemsInsideBasket: JSON.stringify(oldItems) })
-        this.updateCartItemsCount();
-        this.gettingCartProducts();
-    }
 
-    gettingCartProducts = (props) => {
-
-        let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-        let newList = [];
-        let globalItemList = this.state.items;
-
-        let globalItemListLength = Object.keys(globalItemList).length
         if (globalItemListLength > 0) {
-            fromLocalStorage.forEach(item => {
+            console.log(oldItems)
+            //reik idet catcha jei nesufaidina ID nes kitaip objekta visvien ipushina i newList ir paskui bybis veikia
+            oldItems.forEach(item => {
                 globalItemList[item.id].quantity = item.quantity
                 newList.push(globalItemList[item.id]);
             })
-            this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
+   
+            newList.forEach(product => {
+                cost += product.quantity * product.price
+            })
+            
+        }
+        if (oldItems) 
+            console.log('paleido ir sita')
+            localStorage.setItem('cartItems', JSON.stringify(oldItems))
+            this.setState({ price: Math.round(cost * 100) / 100, productsInCart: newList, itemsInsideBasket: JSON.stringify(oldItems), cartItemCount: oldItems.length  })
+        
+
+    }
+
+    updateCartItemsCount = () => {
+        let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
+        
+        if (itemsInsideLocalStorage)
+            // this.setState({ productsInCart: itemsInsideLocalStorage, cartItemCount: itemsInsideLocalStorage.length })
+            this.setState({cartItemCount: itemsInsideLocalStorage.length })
+
+    }
+
+    openMenu = () => {
+        const nav = document.getElementById('topNav');
+        if(nav.className === "ulStyle") {
+            nav.className += " responsive";
+        } else {
+            nav.className = "ulStyle";
         }
     }
 
-    genericPriceCalculation = () => {
-        const { productsInCart, price } = this.state;
-        let cost = 0;
-        productsInCart.forEach(product => {
-            cost += product.quantity * product.price
-        })
-        this.setState({ price: Math.round(cost * 100) / 100 })
+    openMenuForCart = () => {
+        const nav = document.getElementById('topNav');
+        if(nav.className === "ulStyle") {
+            return null
+        } else if(nav.className === "ulStyle responsive"){
+            console.log('haha')
+            nav.className = 'ulStyle';
+        }
     }
 
+
     render() {
-        console.log('rerender App.js')
-    //    let cartItemCount =JSON.parse(localStorage.getItem('cartItems')).length - 1;
-        // console.log(this.state.cartItemCount.length || 0)
         return (
             <Router>
                 <div className="App">
                     <nav>
-                        <ul className='ulStyle'>
-                            <li className='listItem'>
-                                <Link to="/">Pradžia</Link>
-                            </li>
-                            <li className='listItem'>
-                                <Link to="/About">Verslo galimybė</Link>
-                            </li>
-                            <li className='listItem'>
-                                <Link to="/categories/">Produktai</Link>
-                            </li>
-                            <li className='listItem floatRight'>
-                                <Link to="/Contacts">Kontaktai</Link>
-                            </li>
-                            <li className='listItem floatRight deleteItem={this.deleteItem}'>
-                                <Link to="/Cart">
-                                    <div>
-                                        {/* <div className="cartItems"><p className="cartText">{this.state.productsInCart.length}</p></div> */}
+                        <ul className='ulStyle' id='topNav'>
+                            <Link className="dirToHome" to="/"><p>Dibutes Alavijai</p> </Link>
+                            <Link onClick={() => this.openMenu()} to="/"><li className='listItem'>Pradžia</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/businessOpportunity"><li className='listItem'>Verslo galimybė</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/categories/"><li className='listItem'>Produktai</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/Contacts"><li className='listItem floatRight'>Kontaktai </li></Link>
+                            <Link onClick={() => this.openMenuForCart()} tabIndex="0"  to="/cart">
+                                <li className='listItem floatRight deleteItem={this.deleteItem}'>
+                                    <div style={{position: "relative", width: "40px", margin: "auto"}}>
                                         <div className="cartItems"><p className="cartText">{this.state.cartItemCount}</p></div>
-
                                         <img style={{ width: '30px', background: 'transparent' }} src={basketIcon} alt={'Cart Icon'} />
                                     </div>
-                                </Link>  
+                                </li> 
+                            </Link>
+                            <li className="icon" >
+                                <img onClick={() => this.openMenu()} style={{ width: '50px', 'zIndex': '100' }} src={hamburgerIcon} alt={'Menu img'} />
                             </li>
                         </ul>
-                    </nav>      
-                    <img style={{width:'100px', 'paddingTop': '50px', display:'block', 'zIndex':'100'}} src={foreverLogo} alt={'Forever Logo'} />
+                    </nav>
+                    <Link to="/">
+                        <h1 className="projectName">Alavijo Produktai</h1>
+                    </Link>
+                    {/* <img className="logoStyle" src={foreverLogo} alt={'Forever Logo'} /> */}
                     <Route path="/" exact>
-                        <Home />
+                        <Home paragraphs={this.state.paragraphs} />
                     </Route>
-                    <Route path="/about">
-                        <About />
+                    <Route exact strict path="/businessOpportunity">
+                        <BusinessOpportunity businessOpportunity={this.state.paragraphs.businessOpportunity} />
                     </Route>
+                    <Route path="/checkout" render={(props) => <Checkout />}/>
+                    <Route strict path="/categories/" render={(props) => <CategoryRouter stocks={this.state.productsInCart} />} />
+                    <Route path="/categories/:category/:id" render={(props) => <FullProductDescription {...props} changeQuantities={this.changeQuantities} products={this.state.items} productsInCart={this.state.productsInCart} />} />
+                    <Route exact strict path='/categories/:category' render={props => <AllProducts changeQuantities={this.changeQuantities}  key={window.location.pathname} products={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
 
-                    <Route strict path="/categories/" component={(props) => <CategoryRouter  stocks={this.state.productsInCart} />} />
-                    <Route path="/categories/:category/:id" component={(props) => <FullProductDescription {...props} newTestFunction={this.newTestFunction} clicked={this.state.clicked} changeQuantities={this.changeQuantities} productsInCart={this.state.productsInCart} genericPriceCalculation={this.genericPriceCalculation}  addNCount={this.addNCount} addToBasket={this.addToBasket} products={this.state.items} />} />
-                    <Route exact strict path='/categories/:category' component={(props) => <AllProducts changeQuantities={this.changeQuantities} addNCount={this.addNCount} key={window.location.pathname} products={this.state.items} addToBasket={this.addToBasket} updateCartItemsCount={this.updateCartItemsCount} />} />
-                    
                     <Route path="/Contacts">
                         <Contacts kintamasis="pirmasis" />
                     </Route>
-                    <Route path="/Cart" component={(props) => <Cart changeQuantities={this.changeQuantities} genericPriceCalculation={this.genericPriceCalculation} addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} productList={this.state.productsInCart} updateCartItemsCount={this.updateCartItemsCount} />} />
-                    {/* <Route path="/Cart">
-                        <Cart addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items}  productList={this.state.productsInCart} />
-                    </Route> */}
+                    <Route path="/cart" component={(props) => <Cart changeQuantities={this.changeQuantities}  addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} productList={this.state.productsInCart} updateCartItemsCount={this.updateCartItemsCount} />} />
                     <div className="footerHoldInPlace">
                         <footer>
                             <div className="footer">
-                                <a href="#">Vizija</a>
-                                <Link to="/">Apie produktus</Link>
-                                <Link to="/About">Verslo galimybė</Link>
-                                <a href="#">Siuntimas</a>
                                 <div className="breakAfter">
-                                    <Link to="/Contacts">Kontaktai</Link>  
-                                    <a href="daivagusevaite@gmail.com"><img style={{ width: '30px', marginLeft: '10px'}} src={mailIcon} alt={'Mail Icon'} /></a>
-                                    <a href="https://www.facebook.com/groups/152164343511570"><img style={{ width: '30px', marginLeft: '10px' }} src={facebook} alt={'Facebook icon'} /></a>
-                                    <a href="https://www.instagram.com/daivagusevaite/?hl=en"><img style={{ width: '30px', marginLeft: '10px' }} src={instagram} alt={'Instagram icon'} /></a>
+                                    <p>Sekite mus:</p>
+                                    <a tabIndex="0" href="daivagusevaite@gmail.com"><img style={{ width: '30px', marginLeft: '10px' }} src={mailIcon} alt={'Mail Icon'} /></a>
+                                    <a tabIndex="0" href="https://www.facebook.com/groups/152164343511570"><img style={{ width: '30px', marginLeft: '10px' }} src={facebook} alt={'Facebook icon'} /></a>
+                                    <a tabIndex="0" href="https://www.instagram.com/daivagusevaite/?hl=en"><img style={{ width: '30px', marginLeft: '10px' }} src={instagram} alt={'Instagram icon'} /></a>
                                 </div>
-                                <div className="break"></div>
+
+                                <div className="footerTop">
+                                    <a tabIndex="0" href="#">Vizija</a>
+                                    <Link tabIndex="0" to="/">Apie produktus</Link>
+                                    <Link tabIndex="0" to="/About">Verslo galimybė</Link>
+                                    <a tabIndex="0" href="#">Siuntimas</a>
+                                    <Link tabIndex="0" to="/Contacts">Kontaktai</Link>
+                                </div>
                                
+                                <div className="break"></div>
                                 <p> © 2021 Visos teisės saugomos</p>
                             </div>
-                            
-                           
-                        </footer>                  
+                        </footer>
                     </div>
                 </div>
-           </Router>
+            </Router>
         )
     }
 }
 
 class Home extends Component {
    
-    
+    // takeText = () => {
+    //     // console.log('pradejo')
+    //     fetch('http://localhost:3000/paragraphs')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             const paragraphs2 = data[0];
+    //             console.log(paragraphs2)
+    //         })
+    // }
     render() {
+        const { homePage, homePage2 } = this.props.paragraphs;
 
-        return(
-            <div>
-                <h1>Home2</h1>
+        return (
+            <div className="homePage">
+                <h1>Home</h1>
+                <div className="homePageDisplay">
+                    <div>
+                        <h4>
+                            Apie mane
+                        </h4>
+                        <p>{homePage}</p>
+                    </div>
+                    <img src={profilePic} alt="Daiva S."></img>
+                    <img  src={Aloe} alt="Aloe"></img>
+                    <div>
+                        <h4>
+                            Produktai iš alavijo
+                        </h4>
+                        <p>{homePage2}</p>
+                    </div>
+                </div>
+                
             </div>
         )
     }
-        
-}
 
-
-
-const House =(props) => {
-   let {path, url} = useRouteMatch();
-
-    return(
-        <h1>Like so</h1>
-       
-    )
-   
 }
 
 export default App;

@@ -1,50 +1,301 @@
 .cartBox {
-    box-shadow: 5px 8px 15px 4px #888888 ;
+    box-shadow: 2px 2px 5px 1px #888888;
     width: 90%;
     display: inline-block;
     margin-top: 20px;
     padding: 20px;
     margin: 10px;
+  
 }
 
 .singleProduct {
-    box-shadow: 0px 4px 2px -2px #888888;
-    width: 70%;
+    box-shadow: 0px 4px 2px -2px darkgoldenrod;
+    width: 60%;
     height: 180px;
     display: block;
     margin-top: 20px;
     float: left;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.cartBox > :nth-child(2) {
+    margin: 0;
 }
 
-.sidePanel {
+/* .sidePanel {
     width: 30%;
     height: 100%;
     position: fixed;
-    right: 0;
+    right:7%;
+} */
+.amount {
+    margin-bottom: 8px;
+}
+
+
+.wrapper {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    /* margin-left: 1em; */
+}
+/* pasalint krc jei ka  */
+.testmeout {
+    /* width: max-content; */
+    text-align: center;
+}
+.sidePanel {
+    width: 40%;
+    display: flex;
+    flex-flow: column wrap;
+    padding-left: 1rem;
+    margin-top: 3rem;
+}
+
+.sidePanel h5 {
+    text-align: left;
+    margin-top:10px;
+    /* margin-top:3rem; */
+}
+
+.sidePanel a:last-child {
+    width: 95px;
+    margin: 0 auto;
+}
+
+hr {
+    height: 1px; 
+    width:540px; 
+    background-color: #ddd;
+}
+
+.alignDeliveryType {
+    /* display:block; */
+    /* margin: 0 auto; */
+    width: 17rem;
+    /* margin-left:0.5rem; */
+}
+
+.productImageInCart {
+    width: 11rem;
+    position: relative;
+    float: left;
+
 }
 
 .incDec {
-    border-radius: 3px;
+    border-radius: 50%;
+    background-color: rgba(184, 135, 11, 0.432);
     width: 30px;
-    height: 32px;
-    margin: 3px;
+    height: 30px;
+    margin: 6px;
     
 }
 
-.quanities {
-    position: relative;
-    top: -40%;
-    float: right;
+.quantities {
+    /* position: relative; */
+    /* top: -40%; */
+    /* float: right; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     text-align: center;
 }   
 
-.deleteProduct {
+.deleteOrderButton {
+    background-color: rgba(184, 135, 11, 0.432);
+    border-radius: 30px;
     color: black;
-    border: none;
+    padding: 3px 25px;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0);
+    margin-top: 8px;
 }
 
+.mobileDelete {
+    display: none;
+}
+
+.discount {
+    box-shadow: 0px 4px 2px -2px darkgoldenrod;
+    border-radius: 30px;
+    padding: 7px 16px;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-bottom:0.5rem;
+    /* display: inline-block; */
+}
+
+.discount:hover {
+     list-style-type: none;
+     color: black;
+    background-color: rgba(184, 135, 11, 0.432);
+    text-decoration: none;
+}
+
+/* ------Delivery OPTIONS-------- */
+
+.container {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+    width: 17rem;
+
+  font-size: 22px;
+  color: black;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    height: 2rem;
+    width: 17rem;
+    /* border-bottom: 2px solid goldenrod; */
+    box-shadow: 0px 4px 2px -2px darkgoldenrod;
+    /* background-color: rgba(184, 135, 11, 0.432); */
+  /* border-radius: 50%; */
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: rgba(184, 135, 11, 0.432);
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  /* background-color: goldenrod; */
+    background-color: rgba(184, 135, 11, 0.432);
+
+  /* border: 2px solid black; */
+  
+}
+
+.warning {
+    color: red;
+    font-size: 1rem;
+}
+/* 
+@media (max-width: 900px) and (min-width: 600px) {
+    .mobileDelete {
+        margin-top:10px;
+        margin-left: 20px; 
+        margin: auto;
+    }
+    
+} */
+
+Dropdown {
+    width: 540px !important;
+}
+
+@media screen and (max-width: 600px) {
+    .testmeout {
+        width: auto;
+    }
+    .cartBox {
+        width: 94%;
+        padding: 5px;
+        margin: 0;
+        margin-bottom: 30px;
+
+    }
+    .singleProduct {
+        width: 100%;
+        float: none;
+        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+    .singleProduct h5 , p:not(:first-child) {
+        margin: 5px;
+    }
+
+    .singleProduct * {
+        font-size: 14px;
+        text-align: center;
+    }
+    .amount {
+        text-align: center;
+        margin: 0px;
+        display: none;
+    }
+    .sidePanel {
+        display: block;
+    }
+    .quantities {
+        display:block;
+        position: static;
+        float:inherit;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    .deleteOrderButton {
+        display: none;
+    }
+   
+    .mobileDelete {
+        margin: auto;
+        margin-top:5px;
+        margin-bottom: 5px;
+        /* margin-left: 20px; */
+        display: block;
+        width:25px;
+        height: 25px;
+    }
+    .incDec{
+        text-align: center;
+    }
+
+    /* Delivery options */
+    .sidePanel * {
+        font-size: 1rem;
+    }
+    .sidePanel .discount {
+        font-size: 0.8rem;
+    }
+    .sidePanel {
+        width: 100%;
+        padding: 3px;
+    }
+
+    .sidePanel h4:last-child {
+        text-align: center;
+        /* margin-top: 10px; */
+        font-weight: bold;
+    }
+    .sidePanel h4 {
+        margin-top:1rem;
+    }
+    .sidePanel br {
+        display: none;
+    }
+
+    .orderButton {
+        margin-top: 20px;
+        display:block;
+    }
+    .miniDescription {
+        margin-top: 10px;
+    }
+}

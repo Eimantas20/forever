@@ -2,11 +2,22 @@
   text-align: center;
   position: relative;
   min-height: 100vh;
+  font-family:'Titillium Web', sans-serif, 'MS Reference Sans Serif', 'Source Sans Pro', 'Microsoft Sans Serif', 'Lucida Sans Unicode';
+  /* font-family: , sans-serif; */
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.projectName {
+    position: absolute;
+    top: 0;
+    width: 280px;
+    left:50%;
+    margin-top: 15px;
+    margin-left:-140px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -33,54 +44,74 @@
 
 .cartItems {
     position: absolute;
+    /* position: relative; */
     color:black;
-    background-color: tomato;
+    /* background-color: tomato; */
+    background-color: rgba(220, 173, 50, 1);
     border:1px solid white;
     margin-left: 20px;
     width: 20px;
     height: 20px;
     z-index: 10;
     border-radius: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
 }
 
 .cartText {
+    font-size: 0.9rem;
     margin: 0px;
     padding: 0px;
+    display:flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    display:flex;
     padding-bottom: 2px;
 }
-.footerHoldInPlace {
-    padding-bottom: 4rem;
-}
-
 
 .break {
     width: 100%;
     height: 0;
 }
+
+.logoStyle {
+    width:100px;
+    padding-top: 50px;
+    display: block;
+    z-index: 100;
+}
+.footerHoldInPlace {
+    padding-bottom: 4rem;
+}
 .footer {
+    border-top: 2px solid goldenrod;
     position: absolute;
     line-height: 2rem;
     bottom: 0;
     width: 100%;
     height: 4rem;
     display:flex;
-    flex-flow: wrap;
-    justify-content: space-around;
+    flex-direction: column;
     color: #6c757d !important;
 }
 
-.footer p {
-    
-    margin-right: 30px;
-    padding-right: 50px;
+.breakAfter p{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.breakAfter > a {
+    margin: 0 10px;
+}
+
+.footerTop {
+    display:flex;
+    justify-content: space-around;
+}
+
+a:hover {
+    color: #000;
 }
 
 @keyframes App-logo-spin {
@@ -92,3 +123,80 @@
   }
 }
 
+.homePage {
+    margin: 0 auto;
+    width: 70%;
+    margin-bottom: 50px;
+
+}
+
+.homePageDisplay {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    justify-items: center;
+    align-items: center;
+}
+
+.homePageDisplay * {
+    margin: 25px;
+}
+
+.homePageDisplay > img {
+    width:100%;
+    max-width: 560px;
+}
+
+.homePageDisplay p {
+    text-align: justify;
+}
+@media (max-width: 1100px) and (min-width: 600px) {
+    .homePage {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width:600px) {
+
+    .logoStyle {
+        visibility: hidden;
+        padding-top: 10px;
+    }
+
+    .projectName {
+        display:none;
+    }
+
+    .footerTop {
+    display: flex;
+    flex-direction: column;
+    }
+
+    .footerTop > a {
+        background-color: #f5f5f5;
+        text-align: left;
+        width: 100%;
+        padding: 3px 0;
+        padding-left: 2rem;
+        border-top: 1px solid #808080;
+    }
+    .homePage {
+        width:97%;
+    }
+    .homePageDisplay * {
+        margin: 0;
+    }
+    .homePageDisplay {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .homePageDisplay img {
+        width: 250px;
+      
+    }
+
+
+}

@@ -4,17 +4,23 @@
     box-sizing: border-box;
 }
 
+
+
 .ulStyle {
     color: black;
     list-style-type: none;
-    margin: 0;
+    margin: auto;
     padding: 0;
-    margin-bottom: 20px;
+    padding-top: 25px;
+    margin-bottom: 70px;
     /* overflow: hidden; */
     background-color: white;
-    position: fixed;
-    width: 100%;
-    height: 50px;
+    /* position: fixed; */
+    width: 90%;
+    /* height: 50px; */
+    z-index: 2;
+    /* padding-bottom:60px; */
+    /* border-bottom: 2px solid goldenrod; */
 }
 a {
     color: #000000;
@@ -23,35 +29,118 @@ a {
 }
 
 
-/* li {
+.categoryNav {
+    border-top: 2px solid  darkgoldenrod;
+    /* border-bottom: 2px solid  darkgoldenrod; */
+    margin-bottom: 0;
+}
+
+.activeCategory {
+    /* background-color:goldenrod; */
+    /* background-color: rgba(184, 135, 11, 0.432); */
+    border-bottom: 3px solid black;
+    /* line-height: 1.8em; */
+    /* border-radius: 20px; */
     float: left;
     display: block;
-    color: white;
+    color: black;
     text-align: center;
-    padding: 14px 16px;
-} */
-.listItem {
+    padding: 0px 6px;
+    position: relative;
+    margin: 0 15px;
+
+    /* border-left: 2px solid darkgoldenrod; */
+    /* border-right: 2px solid darkgoldenrod; */
+
+    /* margin: 0 5px; */
+}
+
+.inactiveCategory{
+    /* background-color: rgba(184, 135, 11, 0.432); */
+    line-height: 2em;
+    /* border-radius: 20px; */
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 0px 6px;
+    position: relative;
+    margin: 0 15px;
+    transition: width .3s;
+
+}
+
+
+/* .listItemCategories {
+    line-height: 1em;
+    border-radius: 20px;
     float: left;
     display: block;
     color: black;
     text-align: center;
     padding: 14px 16px;
     position: relative;
+    margin: 0 5px;
+
+} */
+
+/* .inactiveCategory:hover {
+    background-color: rgba(184, 135, 11, 0.432);
+    border-bottom: 3px solid black;
+} */
+
+.inactiveCategory::after {
+    content: '';
+    display: block;
+    margin-top: 3px;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width .3s;
+}
+
+.inactiveCategory:hover::after {
+    width: 100%;
+    /* //transition: width .3s; */
+}
+
+/* .listItemCategories:hover {
+    color: #000000;
+    text-decoration: none ;
+    border-bottom: 50px solid black;
+    background-color: rgba(184, 135, 11, 0.432);
+} */
+
+/* .listItemCategories:active {
+    background-color: red;
+} */
+
+/* .listItemCategories:focus {
+    background-color: yellow;
+} */
+
+
+/* .productNav a:focus {
+    background-color: red;
+
+} */
+/* listItem got to be above floatRight, otherwise float: left takes place on cart and contacts as well */
+.listItem {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    margin: 14px 16px;
+    position: relative;
 }
 
 .floatRight {
     float: right;
-    margin-right: 50px;
+    /* margin-right: 50px; */
 }
 
-.listItem:hover {
-    /* background-color: #111; */
-    cursor: pointer; 
-    /* text-shadow: 0 0 0.25em black; */
-}
 
 .listItem::before {
-
     content: '';
     position: absolute;
     background: black;
@@ -59,21 +148,31 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    transform: perspective(50px) rotateX(70deg) translateZ(-30px) scale(1, 0.35);
-    filter: blur(30px);
+    transform: perspective(40px) rotateX(70deg) translateZ(-30px) scale(1, 0.35);
+    filter: blur(19px);
 
 }
-
-/* li:hover {
-    background-color: #111;
-    cursor: pointer;
+/* .listItem:focus {
+    background-color: darkmagenta;
 } */
 
 .listItem:hover {
-  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
+    cursor: pointer; 
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.productNav {
+    list-style-type: none;
+    /* cursor: pointer; */
+    margin-top: 20px;
+    /* width: 900px; */
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 @keyframes shake {
@@ -92,4 +191,141 @@ a {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+
+.ulStyle .icon, .dirToHome {
+    display: none;
+}
+
+@media (max-width:520px) and (min-width:430px) {
+    .productNav {
+        display: grid;
+        grid-template-columns: repeat(3, 33%);
+        grid-template-rows: repeat(3, auto);
+    }
+    .productNav :last-child {
+        grid-column: span 3;
+        justify-self: center;
+    }
+}
+
+
+@media (max-width: 600px) {
+  .ulStyle a:not(:nth-child(6)) {display: none;}
+  /* .ulStyle a {display: none; float:left;} */
+  .ulStyle a:first-child {display: block;}
+}
+
+@media screen and (max-width: 430px) {
+    .productNav {
+        display: grid;
+        grid-template-columns: repeat(2, 45%);
+        grid-template-rows: repeat(4, auto);
+        justify-self: center;
+        /* width:fit-content; */
+        justify-self: center;
+        padding:0;
+        margin: 0;
+
+    }
+    .productNav a {
+        margin: 2px;
+    }
+    .productNav li {
+        margin: 0px;
+    }
+    .productNav :last-child {
+        grid-column: span 2;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) and (min-width: 600px) {
+    .ulStyle {
+        padding-top: 50px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    
+    .ulStyle .icon {
+        display: block; 
+        position: absolute;
+        left: 0;
+        top: 0; 
+        margin: 24px 0 0 16px;
+    }
+    .ulStyle.responsive .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .ulStyle.responsive .dirToHome {
+        display: none;
+    }
+    .dirToHome {
+        display:block;
+        width: 140px;
+        position: absolute;
+        left: 50%;
+        top: 15px;
+        margin-left: -70px;
+        z-index: 5;
+        font-size: 1.3em;
+    }
+    .ulStyle.responsive a {
+        display: flex;
+        background-color: #FFFFFF;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    /* .ulStyle.responsive li:not(:nth-child(6)) {
+        margin: 14px 16px;
+    } */
+/* 
+    .ulStyle.responsive .cartItems {
+        margin-left: 150px;
+    } */
+
+  /* Styling the categoryNav */
+    .productNav {
+        /* display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center; */
+        /* display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 23px 23px 23px 23px;
+        justify-items: center;
+        margin: 2px 5px;
+        margin-bottom: 10px;
+        margin-top: 100px; */
+         padding: 0;
+
+    }
+
+    .categoryNav li {
+        width: 95%;
+        padding: 3px 5px;
+        line-height: 1em;
+        font-size: 0.8rem;
+      /* background-color: darkmagenta; */
+        border-bottom: 1px solid goldenrod;
+    }
+
+    .categoryNav {
+        border-top: none;
+        margin-bottom: 20px;
+    }
+
+    .inactiveCategory {
+        line-height: 1.5em;
+    }
+    .categoryNav li.activeCategory {
+        border-bottom: 3px solid goldenrod;
+    }
+
+
 }
