@@ -68,39 +68,39 @@ class App extends Component {
     
 
     changeQuantities = (singleProduct, number) => {
-        let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let localStorageProducts = JSON.parse(localStorage.getItem('cartItems')) || [];
         if (number == 1) {
-            if (oldItems.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
+            if (localStorageProducts.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
+                let currentQuantity = localStorageProducts.find(product => product.id == singleProduct.id).quantity;
+                localStorageProducts.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
             }
 
         } else if (number == -1) {
-            if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
+            if (localStorageProducts.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
+                let currentQuantity = localStorageProducts.find(product => product.id == singleProduct.id).quantity;
+                localStorageProducts.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
             }
 
         } else if (number == -100) {
-            if (oldItems.findIndex(item => item.id === singleProduct.id) > -1) {
-                oldItems.splice(oldItems.findIndex(item => item.id === singleProduct.id), 1)
+            if (localStorageProducts.findIndex(item => item.id === singleProduct.id) > -1) {
+                localStorageProducts.splice(localStorageProducts.findIndex(item => item.id === singleProduct.id), 1)
             }
            
         } else if (number == 100) {
-            if (!oldItems.find(product => product.id == singleProduct.id)) {
+            if (!localStorageProducts.find(product => product.id == singleProduct.id)) {
                 let newItem = {
                     'id': singleProduct.id,
                     'quantity': 1
                 };
-                oldItems.push(newItem);
+                localStorageProducts.push(newItem);
 
-            } else if (oldItems.find(product => product.id == singleProduct.id && product.quantity < 10)) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
+            } else if (localStorageProducts.find(product => product.id == singleProduct.id && product.quantity < 10)) {
+                let currentQuantity = localStorageProducts.find(product => product.id == singleProduct.id).quantity;
+                localStorageProducts.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
             }
         }
-        localStorage.setItem('cartItems', JSON.stringify(oldItems))
-        this.setState({ itemsInsideBasket: JSON.stringify(oldItems) })
+        localStorage.setItem('cartItems', JSON.stringify(localStorageProducts))
+        this.setState({ itemsInsideBasket: JSON.stringify(localStorageProducts) })
         this.updateCartItemsCount();
         this.gettingCartProducts();
     }

@@ -130,12 +130,16 @@ a {
     display: block;
     color: black;
     text-align: center;
+    /* margin: 0px 16px; */
+    /* margin: 0; */
+
     margin: 14px 16px;
     position: relative;
 }
 
 .floatRight {
     float: right;
+    /* margin: 0; */
     /* margin-right: 50px; */
 }
 
@@ -173,6 +177,8 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    padding-left:0px;
 }
 
 @keyframes shake {
@@ -197,12 +203,15 @@ a {
 .ulStyle .icon, .dirToHome {
     display: none;
 }
-
+/* situos perkelet kazkur kitur manau */
 @media (max-width:520px) and (min-width:430px) {
     .productNav {
         display: grid;
         grid-template-columns: repeat(3, 33%);
         grid-template-rows: repeat(3, auto);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
     }
     .productNav :last-child {
         grid-column: span 3;
@@ -212,9 +221,27 @@ a {
 
 
 @media (max-width: 600px) {
-  .ulStyle a:not(:nth-child(6)) {display: none;}
-  /* .ulStyle a {display: none; float:left;} */
-  .ulStyle a:first-child {display: block;}
+    .ulStyle a:not(:nth-child(6)) {
+        display: none;
+    }
+    /* .ulStyle a {display: none; float:left;} */
+    .ulStyle a:first-child {
+        display: block;
+    }
+    .ulStyle .floatRight {
+    margin: 0;
+    }
+    .listItem::before {
+        content:none;
+    }
+    .ulStyle.ulStyle.responsive {
+        margin-bottom: 0;
+    }
+    .ulStyle.responsive a:not(:nth-child(6)) li {
+        border-bottom: 1px solid #AFAFAF;
+        margin: 0px 16px;
+        padding: 14px 0px;
+    }
 }
 
 @media screen and (max-width: 430px) {
@@ -224,7 +251,6 @@ a {
         grid-template-rows: repeat(4, auto);
         justify-self: center;
         /* width:fit-content; */
-        justify-self: center;
         padding:0;
         margin: 0;
 
@@ -248,13 +274,18 @@ a {
 }
 
 @media screen and (max-width: 600px) {
+    .productNav li {
+        /* width: strech; */
+        width: -moz-available;
+        width: -webkit-fill-available;
+    }
     
     .ulStyle .icon {
         display: block; 
         position: absolute;
         left: 0;
         top: 0; 
-        margin: 24px 0 0 16px;
+        margin-top:13px;
     }
     .ulStyle.responsive .icon {
         position: absolute;
@@ -264,6 +295,11 @@ a {
     .ulStyle.responsive .dirToHome {
         display: none;
     }
+
+    .ulStyle.responsive .floatRight {
+    margin: 14px 16px;
+    }
+    
     .dirToHome {
         display:block;
         width: 140px;
@@ -307,9 +343,10 @@ a {
     }
 
     .categoryNav li {
-        width: 95%;
+        /* width: 100%; */
+        /* margin: 0 auto; */
         padding: 3px 5px;
-        line-height: 1em;
+        line-height: 1.5em;
         font-size: 0.8rem;
       /* background-color: darkmagenta; */
         border-bottom: 1px solid goldenrod;
@@ -322,9 +359,11 @@ a {
 
     .inactiveCategory {
         line-height: 1.5em;
+        float: none;
     }
     .categoryNav li.activeCategory {
         border-bottom: 3px solid goldenrod;
+        margin-bottom: 5px;
     }
 
 

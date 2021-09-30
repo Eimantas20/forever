@@ -33,7 +33,9 @@ class Cart extends Component {
         }, () => console.log(this.state.showWarning));
     }   
 
-    goToDiscount = () => console.log(this.props.productList);
+    // goToDiscount = () => console.log(this.props.productList);
+    goToDiscount = () => console.log('lopezas');
+
 
     componentDidMount = (props) => {
         this.gettingCartProducts(props);
@@ -43,14 +45,25 @@ class Cart extends Component {
         let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
         let globalItemList = this.props.items;
         let newList = [];
+        let naujaeile = [];
+        let productProperCopy;
+
         let globalItemListLength = Object.keys(globalItemList).length
         if (globalItemListLength > 0 && fromLocalStorage !== null) {
-        // if (fromLocalStorage > 0) {
             fromLocalStorage.map(item => {
-                globalItemList[item.id].quantity = item.quantity
-                newList.push(globalItemList[item.id]);
+                // globalItemList[item.id].numeris = item.quantity
+                // globalItemList[item.id].skonis = item.desiredFlavor
+                // newList.push(globalItemList[item.id]);
+
+                //Must make a deep product copy in order for it to lose reffernce to old one, and not to mix up the flavors and quantities.
+                productProperCopy = JSON.parse(JSON.stringify(globalItemList[item.id]));
+      
+                productProperCopy.quantity = item.quantity;
+                productProperCopy.desiredFlavor = item.desiredFlavor
+                naujaeile.push(productProperCopy);
+
             })
-            this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
+            this.setState({ productsInCart: naujaeile }, () => this.genericPriceCalculation())
         }
     }
 
@@ -87,6 +100,7 @@ class Cart extends Component {
     
     render() {
         console.log(this.state.productsInCart)
+        // console.log(this.state.productsInCart)
         return(
             (this.state.productsInCart.length > 0) ?
                 
@@ -94,19 +108,18 @@ class Cart extends Component {
                     <h4 className="testmeout">Tavo pirkinių krepšelis</h4>
                     {this.state.productsInCart.map(singleProduct => 
                     
-                        <div className="singleProduct" key={singleProduct.id}>
+                        <div className="singleProduct" key={Math.random()}>
                             <div>
                                 <Link to={`/categories/${singleProduct.url}/${singleProduct.id}`} >
-                                    <img className="productImageInCart" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" />
+                                    <img className="productImageInCart" src={singleProduct.picture} alt="Product picture" />
                                 </Link>
                             </div>
                             <div className="miniDescription">
                                 <h5>{singleProduct.name}</h5>
                                 <p>€ {singleProduct.price}</p>
                                 <p>{singleProduct.category}</p>
+                                <p className={singleProduct.desiredFlavor === null ? 'hide' : 'show'}>{singleProduct.desiredFlavor}</p> 
                             </div>
-                            
-
                             <div className="quantities">
                                 <div>
                                     <p className="amount">Kiekis</p>
@@ -115,7 +128,7 @@ class Cart extends Component {
                                     <button className="incDec" onClick={() => this.props.changeQuantities(singleProduct, +1)}>+</button>
                                 </div>
                                 <button className="deleteOrderButton" onClick={() => this.props.changeQuantities(singleProduct, -100)}>Pašalinti prekę</button>
-                                <img className="mobileDelete" src={deleteButton} alt="Pašalinti" />
+                                <img className="mobileDelete" src={deleteButton} alt="Pašalinti" onClick={() => this.props.changeQuantities(singleProduct, -100)} />
                             </div>
                             </div>)}
                         <div className="sidePanel" >
@@ -145,7 +158,7 @@ class Cart extends Component {
                                         </label>
                                     </div>
                                     <div>
-                                        <Dropdown 
+                                        <Dropdown
                                             options={this.state.terminals[this.state.chosenTerminal]}
                                             prompt='Pasirinkite paštomata' 
                                             value={this.state.value}
@@ -185,7 +198,7 @@ class Cart extends Component {
                             : null
                         } */}
 
-                        <Link onClick={(e) =>  this.state.value == ''? (e.preventDefault(), this.enableWarning()) : null} to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.value, deliveryPrice: this.state.deliveryPrice } }}>
+                        <Link onClick={(e) =>  this.state.value == '' ? (e.preventDefault(), this.enableWarning()) : null} to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.value, deliveryPrice: this.state.deliveryPrice } }}>
                             <button className="orderButton">
                                 Pirkti
                             </button>

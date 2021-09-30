@@ -5,7 +5,6 @@
     margin-top: 20px;
     padding: 20px;
     margin: 10px;
-  
 }
 
 .singleProduct {
@@ -18,8 +17,10 @@
     display:flex;
     flex-direction: row;
     justify-content: space-between;
+    /* align-items: flex-end; */
     align-items: center;
 }
+
 .cartBox > :nth-child(2) {
     margin: 0;
 }
@@ -42,6 +43,13 @@
     justify-content: center;
     /* margin-left: 1em; */
 }
+.wrapper > :nth-of-type(3){
+    width: 90%;
+    max-width: 34rem;
+    background-color: darkmagenta;
+}
+
+
 /* pasalint krc jei ka  */
 .testmeout {
     /* width: max-content; */
@@ -68,8 +76,13 @@
 
 hr {
     height: 1px; 
-    width:540px; 
+    /* width:540px;  */
+    width:auto;
     background-color: #ddd;
+}
+
+.hide {
+    display: none;
 }
 
 .alignDeliveryType {
@@ -83,7 +96,6 @@ hr {
     width: 11rem;
     position: relative;
     float: left;
-
 }
 
 .incDec {
@@ -92,7 +104,6 @@ hr {
     width: 30px;
     height: 30px;
     margin: 6px;
-    
 }
 
 .quantities {
@@ -102,7 +113,10 @@ hr {
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
-    text-align: center;
+    text-align: center;   
+    flex-basis: 152px;
+    flex-grow: 0;
+    flex-shrink: 0;
 }   
 
 .deleteOrderButton {
@@ -111,7 +125,9 @@ hr {
     color: black;
     padding: 3px 25px;
     text-align: center;
-    margin-top: 8px;
+    margin: 8px 0px;
+    z-index: 5;
+    overflow: auto;
 }
 
 .mobileDelete {
@@ -143,7 +159,6 @@ hr {
   margin-bottom: 12px;
   cursor: pointer;
     width: 17rem;
-
   font-size: 22px;
   color: black;
   -webkit-user-select: none;
@@ -163,13 +178,14 @@ hr {
 /* Create a custom radio button */
 .checkmark {
     position: absolute;
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
     left: 0;
     right: 0;
     text-align: center;
     height: 2rem;
     width: 17rem;
+    /* width: 100%; */
     /* border-bottom: 2px solid goldenrod; */
     box-shadow: 0px 4px 2px -2px darkgoldenrod;
     /* background-color: rgba(184, 135, 11, 0.432); */
@@ -207,6 +223,11 @@ hr {
 Dropdown {
     width: 540px !important;
 }
+@media (max-width:860px) and (min-width:600px) {
+    .sidePanel {
+        width:30%;
+    }
+}
 
 @media screen and (max-width: 600px) {
     .testmeout {
@@ -219,15 +240,30 @@ Dropdown {
         margin-bottom: 30px;
 
     }
-    .singleProduct {
+    /* .singleProduct {
         width: 100%;
         float: none;
         margin-top: 2px;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        justify-content: space-between;
+    } */
+
+    .singleProduct {
+        width: 100%;
+        margin-top: 2px;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        grid-template-rows: 50% 50%;
     }
-    .singleProduct h5 , p:not(:first-child) {
+    .singleProduct :first-child {
+        width: 100%;
+        grid-row-start: span 3;
+    }
+
+    
+    .singleProduct h5 , .cartBox p:not(:first-child) {
         margin: 5px;
     }
 
@@ -235,6 +271,10 @@ Dropdown {
         font-size: 14px;
         text-align: center;
     }
+    .productImageInCart {
+        width:6rem;
+    }
+
     .amount {
         text-align: center;
         margin: 0px;
@@ -249,6 +289,7 @@ Dropdown {
         float:inherit;
         text-align: center;
         margin-bottom: 5px;
+        flex-basis: 0%;
     }
     .deleteOrderButton {
         display: none;
@@ -297,5 +338,8 @@ Dropdown {
     }
     .miniDescription {
         margin-top: 10px;
+    }
+    .miniDescription :last-child {
+        display:none;
     }
 }

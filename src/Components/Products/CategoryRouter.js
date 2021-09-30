@@ -13,40 +13,39 @@ import React, { Component, useState, useEffect } from 'react';
 import AllProducts from './AllProducts';
 import './AllProducts.css';
 
-const CategoryRouter = ({ match }) => {
+const CategoryRouter = (props, { match }) => {
     // let routeMatch = useRouteMatch('/categories/:category/:id');
-
-    const categories = [
-        { 
-            url: "biciu_produktai", 
-            name: "Bičių produktai"
-        },
-        {
-            url: "eteriniai_aliejai",
-            name: "Eteriniai aliejai"
-        },
-        {
-            url: "odos_prieziura",
-            name: "Odos priežiūros"
-        },
-        {
-            url: "svorio_reguliavimas",
-            name: "Svorio reguliavimas"
-        },
-        {
-            url: "maisto_papildai",
-            name: "Maisto papildai"
-        }, 
-        {
-            url: "gerimai",
-            name: "Gėrimai"
-        },
-        {
-            url: "higienos_priemones",
-            name: "Higienos priemonės"
-        }
-    ]
-   
+    // const categories2 = [
+    //     { 
+    //         url: "biciu_produktai", 
+    //         name: "Bičių produktai"
+    //     },
+    //     {
+    //         url: "eteriniai_aliejai",
+    //         name: "Eteriniai aliejai"
+    //     },
+    //     {
+    //         url: "odos_prieziura",
+    //         name: "Odos priežiūros"
+    //     },
+    //     {
+    //         url: "svorio_reguliavimas",
+    //         name: "Svorio reguliavimas"
+    //     },
+    //     {
+    //         url: "maisto_papildai",
+    //         name: "Maisto papildai"
+    //     }, 
+    //     {
+    //         url: "gerimai",
+    //         name: "Gėrimai"
+    //     },
+    //     {
+    //         url: "higienos_priemones",
+    //         name: "Higienos priemonės"
+    //     }
+    // ]
+    const {categories} = props
     return (
         <div>
             <nav className="categoryNav">

@@ -6,7 +6,7 @@ const Checkout = (props) => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('mdwork20@gmail.com');
-    const [number, setNumber] = useState('')
+    const [number, setNumber] = useState('861111111')
     const [message, setMessage] = useState('');
     const [subject, setSubject] = useState('');
     const [address, setAddress] = useState('');

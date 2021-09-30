@@ -6,11 +6,14 @@ const startValue = {
     viewingProduct: {},
     viewingProductQuantity: 0
 }
+
 function FullProductDescription(props, startValue) {
    
     let productsInCartFromLocalStorage = JSON.parse(localStorage.getItem('cartItems')) || [];
     const [viewingProductQuantity, setViewingProductQuantity] = useState(0);
     const [viewingProduct, setViewingProduct] = useState({});
+    const [flavors, setFlavors] = useState([]);
+    const [defaultFlavor, setDefaultFlavor] = useState('');
 
     const [sideEffect, handleSideEffect] = useState(0);
     let { url, match } = useRouteMatch();
@@ -19,41 +22,114 @@ function FullProductDescription(props, startValue) {
     
     useEffect(()=> {
         handleChanges(props)
-    }, [props.productsInCart, viewingProductQuantity]);
-    
-    function handleChanges(props) {
+        // blet reik perdaryt ta handle chagnes taip kad butu su flavors ir tada paziurek tiksliau kada reik rerenderingo - pagal kuriuos var.
+    // }, [props.productsInCart, viewingProductQuantity]);
+    }, [props.productsInCart]);
 
+    function handleChanges(props, e) {
+ 
+        let neededFlavor = '';
         let allProductsFromDB = Object.values(props.products);
         let productsLength = Object.keys(allProductsFromDB).length;
 
         if (productsLength > 0) {
+            let foundProduct = allProductsFromDB.find(product => product.id == choosenProductId);
+            let checking = foundProduct.hasOwnProperty('flavor')
+            setViewingProduct(foundProduct);
+            if( foundProduct.flavor !== null ) {
+                setFlavors(foundProduct.flavor.split('\n'))
+                setDefaultFlavor(foundProduct.flavor.split('\n')[0])
+                if (document.getElementById('flavors') == null) {
+                    neededFlavor = foundProduct.flavor.split('\n')[0]
+                } else {
+                    neededFlavor = document.getElementById('flavors').value
+                }
+
+            } 
             
-            if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId)) {
+            // ON INITIAL LOAD - NO FLAVOR
+            if (foundProduct.flavor == null && productsInCartFromLocalStorage.find(product => product.id == choosenProductId)) {
                 kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity;
             }
-            let myProduct = allProductsFromDB.find(product => product.id == choosenProductId)
-            setViewingProduct(myProduct);
+            //HAS A FLAVOR
+            if (foundProduct.flavor !== null && productsInCartFromLocalStorage.find(product => product.id == choosenProductId && neededFlavor == product.desiredFlavor)) {
+                // console.log('pataikei?')
+                // setFlavors(foundProduct.flavor.split('\n'))
+                // setDefaultFlavor(foundProduct.flavor.split('\n')[0])
+                // if (document.getElementById('flavors') == null) {
+                //     neededFlavor = foundProduct.flavor.split('\n')[0]
+                // } else {
+                //     neededFlavor = document.getElementById('flavors').value
+                // }
+                // console.log(kiekis)
+                // console.log(neededFlavor)
+
+                kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId && neededFlavor ==  product.desiredFlavor).quantity;
+            }
+
+            if (foundProduct.flavor !== null) {
+                setFlavors(foundProduct.flavor.split('\n'))
+                setDefaultFlavor(foundProduct.flavor.split('\n')[0])
+                neededFlavor = foundProduct.flavor.split('\n')[0]
+                // if ( null !== kebybys && productsInCartFromLocalStorage.find(product => product.id == choosenProductId && product.desiredFlavor == document.getElementById('flavors').value)) {
+                if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId && product.desiredFlavor == neededFlavor)) {
+                // if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId && document.getElementById('flavors').value ? product.desiredFlavor == document.getElementById('flavors').value: null)) {
+                    // kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId && product.desiredFlavor == document.getElementById('flavors').value).quantity;
+                }
+            } else if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId)) {
+
+                    // if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId && document.getElementById('flavors').value ? product.desiredFlavor == document.getElementById('flavors').value: null)) {
+                    kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity;
+            }
             setViewingProductQuantity(kiekis || 0)
         }
     }
-console.log(props)
-    return (viewingProduct?
+
+
+    const pickFlavor = () => {
+        let flavor = document.getElementById('flavors').value
+        // console.log('paleido')
+        kiekis = 0;
+        if (productsInCartFromLocalStorage.find(product => product.id == choosenProductId && product.desiredFlavor == flavor)) {
+            kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId && product.desiredFlavor == flavor).quantity;
+        }
+        setViewingProductQuantity(kiekis)
+        // console.log(kiekis)
+        // viewingProduct.desiredFlavor = flavor
+        // console.log(flavor.target.value)
+    }
+
+    // let flavorValue = document.getElementById('flavors').value;
+    
+    // const testas = (e) => console.log(e.target.value)
+
+    return (viewingProduct ?
         <div className="fullDescription">
+        {/* { console.log(defaultFlavor)} */}
             <div className="gridLayout">
                 <div>
-                    <img className="fullDescriptionImage" src="https://i0.wp.com/alavijoproduktai.lt/wp-content/uploads/2017/03/beta-copy.jpg?resize=560%2C560&ssl=1" alt="Product picture" />
+                    <img className="fullDescriptionImage" src={viewingProduct.picture} alt="Product picture" />
                 </div>
                 <div className="mainProductInfo">
                     <h1>{viewingProduct.name}</h1>
                     <h3>{viewingProduct.category}</h3>
-                    <h3>€ {viewingProduct.price}</h3>
-                    <h3>{viewingProduct.description}</h3> 
+                    <p>{viewingProduct.mini_description}</p>
+                    {flavors.length > 1 ? 
+                        <select name='flavors' id='flavors' onChange={() => pickFlavor()}>
+                            {flavors.map((flavor) => {
+                                {/* return <option key={flavor} value={flavor} onClick={() => { console.log(document.getElementById('flavors').value)}}>{flavor}</option> */}
+                                return <option key={flavor} value={flavor}>{flavor}</option>
+                            })}
+                        </select>
+                    : null}
+                    <p>Kiekis: <br />{viewingProduct.amount}</p>
                     <div className="smallerGap">
-                        <p>Kiekis</p>
-                        <p>Porcijų skaičius</p> 
+                        <p>Porcijų skaičius  </p> 
+                        <h3 style={{fontWeight:'bold'}}>€ {viewingProduct.price}</h3>
+                        <h3 style={{ fontWeight: 'bold' }}>ID: {viewingProduct.id}</h3>
                     </div>
-                    <div>
-                        {viewingProductQuantity < 1 ?
+                    <div className="oderSection">
+                        {viewingProductQuantity == 0 ?
                             <button className="deleteOrderButton" onClick={() => props.changeQuantities(viewingProduct, 100)}>Į krepšelį</button>
                            :<div>
                                <p style={{ display: "inline-block" }}>Kiekis</p>
@@ -65,17 +141,12 @@ console.log(props)
                         }
                     </div>
                 </div>
+                <h4>Aprašymas:</h4>
+                <p className="aboutProduct">{viewingProduct.description}</p>
+                <p style={{textAlign: 'left', width: "100%"}}>{viewingProduct.nutrition_info}</p>
+
             </div>
-            <div>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                 when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into 
-                 electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-                 and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-            </div>
+           
         </div>
         :null
     )

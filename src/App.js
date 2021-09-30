@@ -7,6 +7,7 @@ import {
     useRouteMatch
 } from 'react-router-dom';
 import './App.css';
+import HomePage from './Components/homePage/HomePage.js'
 import Random from './Components/NavigationBar/NavigationBar.js';
 import BusinessOpportunity from './Components/businessOpportunity/BusinessOpportunity.js';
 import AllProducts from './Components/Products/AllProducts.js';
@@ -19,10 +20,19 @@ import mailIcon from './img/mail.png';
 import facebook from './img/facebook.png';
 import instagram from './img/instagram.png';
 import Aloe from './img/Aloe.jpg';
+import aloe_vera from './img/aloe_vera.jpg';
 import profilePic from './img/profilePic.jpg';
 import '../src/Components/NavigationBar/NavigationBar.css';
 import './App.css';
 import Checkout from './Components/Checkout/Checkout.js';
+import image_1 from './img/homepage/71fyxuOu-yL._SY606_.jpg';
+import image_2 from './img/homepage/pexels-cecília-o-904621.jpg';
+import image_3 from './img/homepage/pexels-fabrício-lira-2896162.jpg';
+import image_4 from './img/homepage/pexels-yusuf-yulipurnawan-343188.jpg';
+import image_5 from './img/homepage/pexels-linda-prebreza-286951.jpg';
+import image_6 from './img/homepage/pexels-pixabay-268854.jpg';
+import image_7 from './img/homepage/pexels-pixabay-459369.jpg';
+
 
 import OneProductCard from './Components/Products/OneProductCard';
 import CategoryRouter from './Components/Products/CategoryRouter.js';
@@ -40,74 +50,148 @@ class App extends Component {
             cartItemCount: 0,
             clicked: 1,
             count: 0,
-            paragraphs: ''
-            // productsInCart: []
+            paragraphs: '',
+            categories: [
+                {
+                    url: "biciu_produktai",
+                    name: "Bičių produktai",
+                    img: image_1
+                },
+                {
+                    url: "eteriniai_aliejai",
+                    name: "Eteriniai aliejai",
+                    img: image_2
+                },
+                {
+                    url: "odos_prieziura",
+                    name: "Odos priežiūros",
+                    img: image_3
+                },
+                {
+                    url: "svorio_reguliavimas",
+                    name: "Svorio reguliavimas",
+                    img: image_4
+                },
+                {
+                    url: "maisto_papildai",
+                    name: "Maisto papildai",
+                    img: image_5
+                },
+                {
+                    url: "gerimai",
+                    name: "Gėrimai",
+                    img: image_6
+                },
+                {
+                    url: "higienos_priemones",
+                    name: "Higienos priemonės",
+                    img: image_7
+                }
+            ]
+           
         }
     }
     componentDidMount = () => {
         fetch('http://localhost:3000/products')
             .then((response) => response.json())
             .then((response) => {
-                const paragraphs = response.text[0];
+                // const paragraphs = response.text[0];
+                const NX = response.data
+                console.log(NX)
                 let productsFromDB = {};
                 let newList = [];
                 response.data.forEach(item => {
                     productsFromDB[item.id] = item;
                 })
-                let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-                oldItems.forEach(item => {
-                    productsFromDB[item.id].quantity = item.quantity
-                    newList.push(productsFromDB[item.id]);
-                })
-                this.setState({ items: productsFromDB, productsInCart: newList, paragraphs }, () => this.updateCartItemsCount())
+                // console.log(productsFromDB)
+                let localStorageProducts = JSON.parse(localStorage.getItem('cartItems')) || [];
+                // localStorageProducts.forEach(item => {
+                    // productsFromDB[item.id].quantity = item.quantity
+                    // newList.push(productsFromDB[item.id]);
+                // })
+                // console.log(newList)
+                // console.log(productsFromDB)
+                this.setState({ items: productsFromDB, productsInCart: newList, paragraphs: response.text[0] }, () => this.updateCartItemsCount())
             })        
     }
 
     
-
     changeQuantities = (singleProduct, number) => {
-        console.log('changeQuantities from fuckinApp.js has started')
-        let oldItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let flavor;
+        if (document.getElementById('flavors')) {
+             flavor = document.getElementById('flavors').value
+        }
+        let localStorageProducts = JSON.parse(localStorage.getItem('cartItems')) || [];
         let newList = [];
         let globalItemList = this.state.items;
         let globalItemListLength = Object.keys(globalItemList).length;
         let cost = 0;
+
+        console.log('pataike i changeQuantities funkcija')
+        console.log(singleProduct)
+
         if (number == 1) {
-            if (oldItems.find(product => (product.id == singleProduct.id && singleProduct.quantity < 10))) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
-            }
+            console.log(localStorageProducts.find(product => product.id == singleProduct.id))
+
+            if (localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity < 10 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null))) {
+                let currentQuantity = localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity < 10 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)).quantity;
+                console.log(currentQuantity)
+
+                localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity < 10 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)).quantity = currentQuantity + 1
+            } else { this.changeQuantities(singleProduct, 100)}
 
         } else if (number == -1) {
-            if (oldItems.find(product => product.id == singleProduct.id && singleProduct.quantity > 1)) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity - 1
+            console.log('atejo i -1')
+            console.log(localStorageProducts)
+            // console.log(singleProduct)
+
+            // console.log(localStorageProducts.find((product) => product.id == singleProduct.id && (product.desiredFlavor == singleProduct.desiredFlavor || product.desiredFlavor == flavor || product.desiredFlavor == 'none') && product.quantity > 1))
+            console.log(localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity > 1 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)))
+
+
+            if (localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity > 1 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null))) {
+                // console.log('bet cia jau neatejo')
+                let currentQuantity = localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity > 1 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)).quantity;
+                localStorageProducts.find((product) => product.id == singleProduct.id && product.quantity > 1 && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)).quantity = currentQuantity - 1
             }
 
+
+
         } else if (number == -100) {
-            if (oldItems.findIndex(item => item.id === singleProduct.id) > -1) {
-                oldItems.splice(oldItems.findIndex(item => item.id === singleProduct.id), 1)
-                console.log(oldItems)
+            if (localStorageProducts.findIndex((product) => product.id == singleProduct.id && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)) > -1) {
+                localStorageProducts.splice(localStorageProducts.findIndex(product => product.id == singleProduct.id && product.desiredFlavor == (singleProduct.desiredFlavor || flavor || null)), 1)
+                // console.log(localStorageProducts)
             }
 
         } else if (number == 100) {
-            if (!oldItems.find(product => product.id == singleProduct.id)) {
-                let newItem = {
-                    'id': singleProduct.id,
-                    'quantity': 1
-                };
-                oldItems.push(newItem);
+            // console.log('atejo')
+            // console.log(singleProduct.id)
+            // console.log(localStorageProducts.findIndex(product => product.id === singleProduct.id))
+            let newItem = {
+                'id': singleProduct.id,
+                'quantity': 1,
+                'desiredFlavor': flavor || null,
+            };
+            localStorageProducts.push(newItem);
 
-            } else if (oldItems.find(product => product.id == singleProduct.id && product.quantity < 10)) {
-                let currentQuantity = oldItems.find(product => product.id == singleProduct.id).quantity;
-                oldItems.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
-            }
+            // if (!localStorageProducts.find(product => product.id == singleProduct.id)) {
+            //     let newItem = {
+            //         'id': singleProduct.id,
+            //         'quantity': 1,
+            //         'desiredFlavor': flavor,
+            //     };
+            //     localStorageProducts.push(newItem);
+
+            // } else if (localStorageProducts.find(product => product.id == singleProduct.id && product.quantity < 10)) {
+            //     let currentQuantity = localStorageProducts.find(product => product.id == singleProduct.id).quantity;
+            //     localStorageProducts.find(product => product.id == singleProduct.id).quantity = currentQuantity + 1
+            // }
         }
 
         if (globalItemListLength > 0) {
-            console.log(oldItems)
+           
             //reik idet catcha jei nesufaidina ID nes kitaip objekta visvien ipushina i newList ir paskui bybis veikia
-            oldItems.forEach(item => {
+            localStorageProducts.forEach(item => {
                 globalItemList[item.id].quantity = item.quantity
                 newList.push(globalItemList[item.id]);
             })
@@ -117,15 +201,13 @@ class App extends Component {
             })
             
         }
-        if (oldItems) 
-            console.log('paleido ir sita')
-            localStorage.setItem('cartItems', JSON.stringify(oldItems))
-            this.setState({ price: Math.round(cost * 100) / 100, productsInCart: newList, itemsInsideBasket: JSON.stringify(oldItems), cartItemCount: oldItems.length  })
-        
-
+        if (localStorageProducts) 
+            localStorage.setItem('cartItems', JSON.stringify(localStorageProducts))
+            this.setState({ price: Math.round(cost * 100) / 100, productsInCart: newList, itemsInsideBasket: JSON.stringify(localStorageProducts), cartItemCount: localStorageProducts.length  })
     }
 
     updateCartItemsCount = () => {
+        // console.log(this.state.productsInCart)
         let itemsInsideLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
         
         if (itemsInsideLocalStorage)
@@ -148,7 +230,6 @@ class App extends Component {
         if(nav.className === "ulStyle") {
             return null
         } else if(nav.className === "ulStyle responsive"){
-            console.log('haha')
             nav.className = 'ulStyle';
         }
     }
@@ -167,7 +248,7 @@ class App extends Component {
                             <Link onClick={() => this.openMenu()} to="/Contacts"><li className='listItem floatRight'>Kontaktai </li></Link>
                             <Link onClick={() => this.openMenuForCart()} tabIndex="0"  to="/cart">
                                 <li className='listItem floatRight deleteItem={this.deleteItem}'>
-                                    <div style={{position: "relative", width: "40px", margin: "auto"}}>
+                                    <div style={{position: "relative", width: "40px", margin: "0 auto"}}>
                                         <div className="cartItems"><p className="cartText">{this.state.cartItemCount}</p></div>
                                         <img style={{ width: '30px', background: 'transparent' }} src={basketIcon} alt={'Cart Icon'} />
                                     </div>
@@ -183,20 +264,20 @@ class App extends Component {
                     </Link>
                     {/* <img className="logoStyle" src={foreverLogo} alt={'Forever Logo'} /> */}
                     <Route path="/" exact>
-                        <Home paragraphs={this.state.paragraphs} />
+                        <HomePage categories={this.state.categories} />
                     </Route>
                     <Route exact strict path="/businessOpportunity">
                         <BusinessOpportunity businessOpportunity={this.state.paragraphs.businessOpportunity} />
                     </Route>
                     <Route path="/checkout" render={(props) => <Checkout />}/>
-                    <Route strict path="/categories/" render={(props) => <CategoryRouter stocks={this.state.productsInCart} />} />
+                    <Route strict path="/categories/" render={(props) => <CategoryRouter categories={this.state.categories} stocks={this.state.productsInCart} />} />
                     <Route path="/categories/:category/:id" render={(props) => <FullProductDescription {...props} changeQuantities={this.changeQuantities} products={this.state.items} productsInCart={this.state.productsInCart} />} />
                     <Route exact strict path='/categories/:category' render={props => <AllProducts changeQuantities={this.changeQuantities}  key={window.location.pathname} products={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
 
                     <Route path="/Contacts">
                         <Contacts kintamasis="pirmasis" />
                     </Route>
-                    <Route path="/cart" component={(props) => <Cart changeQuantities={this.changeQuantities}  addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} productList={this.state.productsInCart} updateCartItemsCount={this.updateCartItemsCount} />} />
+                    <Route path="/cart" component={(props) => <Cart changeQuantities={this.changeQuantities}  addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
                     <div className="footerHoldInPlace">
                         <footer>
                             <div className="footer">
@@ -226,44 +307,23 @@ class App extends Component {
     }
 }
 
-class Home extends Component {
-   
-    // takeText = () => {
-    //     // console.log('pradejo')
-    //     fetch('http://localhost:3000/paragraphs')
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             const paragraphs2 = data[0];
-    //             console.log(paragraphs2)
-    //         })
-    // }
-    render() {
-        const { homePage, homePage2 } = this.props.paragraphs;
 
-        return (
-            <div className="homePage">
-                <h1>Home</h1>
-                <div className="homePageDisplay">
-                    <div>
-                        <h4>
-                            Apie mane
-                        </h4>
-                        <p>{homePage}</p>
-                    </div>
-                    <img src={profilePic} alt="Daiva S."></img>
-                    <img  src={Aloe} alt="Aloe"></img>
-                    <div>
-                        <h4>
-                            Produktai iš alavijo
-                        </h4>
-                        <p>{homePage2}</p>
-                    </div>
-                </div>
-                
-            </div>
-        )
-    }
-
-}
 
 export default App;
+
+{/* <div className="homePageDisplay">
+    <div>
+        <h4>
+            Apie mane
+        </h4>
+        <p>{homePage}</p>
+    </div>
+    <img src={profilePic} alt="Daiva S."></img>
+    <img src={Aloe} alt="Aloe"></img>
+    <div>
+        <h4>
+            Produktai iš alavijo
+        </h4>
+        <p>{homePage2}</p>
+    </div>
+</div> */}

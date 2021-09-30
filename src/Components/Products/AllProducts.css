@@ -11,7 +11,8 @@
 
 .isdeliojimas {
     display: flex;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
+    justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
 }
@@ -19,7 +20,7 @@
     display:inline-flex;
     flex-direction: row;
 }
-.productBox {
+/* .productBox {
     box-shadow: 2px 2px 10px -5px #888888;
     width: 270px;
     height: 400px;
@@ -27,10 +28,10 @@
     margin-top: 20px;
     padding: 10px;
     margin: 10px;
-}
-.productBox p {
+} */
+/* .productBox p {
     margin-bottom: 0.5rem;
-}
+} */
 
 .pagination {
     display: flex;
@@ -53,6 +54,7 @@
 
 .productImage {
     width: 100%;
+    max-height: 270px;
 }
 
 .fullDescription {
@@ -60,41 +62,55 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 4em;
+    text-align: left;
 }
 
-.mainProductInfo > * {
+/* .mainProductInfo > * {
     padding-bottom: 1.5rem;
-}
+} */
 .smallerGap > * {
     padding-bottom: 0;
 }
 
 .mainProductInfo {
-    padding: 2rem;
+    /* padding: 2rem; */
     margin-top: 2rem;
     display: flex;
     /* flex-wrap: nowrap; */
-    align-content: center;
-    align-items: center;
+    /* align-content: center; */
+    /* align-items: center; */
     flex-direction: column; 
 }
 .mainProductInfo h1{ 
-    font-weight:bold;
+    /* font-weight:bold; */
     font-size: 2.1rem;
+    margin: 0
 }
 .mainProductInfo h3 {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
+    /* font-weight: bold; */
 }
+
+
 
 .gridLayout {
     -ms-display: grid;
     display: grid;
     grid-template-columns: 40% 60%;
-    grid-template-rows: 100%;
+    grid-template-rows: 50% 50%;
 }
 
 .fullDescriptionImage {
-    width:30rem;
+    /* width:30rem; */
+    width:100%;
+    overflow: hidden;
+}
+
+#flavors {
+    width:250px;
+    margin-bottom: 10px;
+    height:30px;
 }
 
 .orderButton {
@@ -113,6 +129,12 @@
 .orderButton a:hover {
     color: black;
     text-decoration: none;
+}
+
+.aboutProduct {
+    grid-column-start: span 2;
+    text-align: justify;
+    width: 100%;
 }
 
 
@@ -216,11 +238,15 @@ select {
     .mainProductInfo {
         padding: 0;
         display: grid;
-        grid-template-columns: 48% 48%;
+        /* grid-template-columns: 100%; */
     }
-    .mainProductInfo :last-child {
+
+    .mainProductInfo * {
         grid-column-start: span 2;
     }
+    /* .mainProductInfo :last-child {
+        grid-column-start: span 2;
+    } */
     .mainProductInfo h1 {
         font-weight:bold;
     }
@@ -233,5 +259,15 @@ select {
 
     .mainProductInfo :not(:last-child) {
         padding: 0px;
+    }
+
+    #flavors {
+        width: 150px;
+    }
+    /* .orderSection {
+        margin: 0 auto;
+    } */
+    .mainProductInfo :last-child {
+        justify-self: center;
     }
 }

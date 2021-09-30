@@ -43,7 +43,9 @@ class AllProducts extends Component {
 
     pickCategory = () => {
         let { products, selectedCategory} = this.state;
+        
         products = Object.values(products)
+        console.log(products)
 
         let filteredProducts = products.filter((filteringProduct) => {
             if (filteringProduct.url === selectedCategory) { return filteringProduct }
@@ -73,28 +75,22 @@ class AllProducts extends Component {
     testvalue =()=> {
         const sort = document.getElementById('sortBy').value
         if (sort == 'priceUp') {
-           const newList = this.state.currentProducts.sort(function(a, b) {
+           const newList = this.state.filteredProducts.sort(function(a, b) {
             return a.price - b.price
         })
-            this.setState({ currentProducts: newList })
+            this.setState({ filteredProducts: newList }, this.pickCategory())
 
         }else if (sort == 'priceDown') {
-            const newList = this.state.currentProducts.sort(function (a, b) {
+            const newList = this.state.filteredProducts.sort(function (a, b) {
                 return b.price - a.price
             })
-            this.setState({ currentProducts: newList})
+            this.setState({ filteredProducts: newList }, this.pickCategory())
 
 
         }
     }
 
-    
-        
-
     render() {
-
-    //    console.log(this.props)
-        // const view = this.state.view;
         const { currentProducts, currentPage, totalPages, filteredProducts, productsInCategory, view } = this.state;
         const headerClass = ['text-dark py-2 pr-4 m-0', currentPage ? 'border-gray border-right' : ''].join(' ').trim();
         return (  
