@@ -96,6 +96,7 @@ hr {
     width: 11rem;
     position: relative;
     float: left;
+    max-height: 176px;;
 }
 
 .incDec {
@@ -291,7 +292,7 @@ Dropdown {
         margin-bottom: 5px;
         flex-basis: 0%;
     }
-    .deleteOrderButton {
+    .quantities .deleteOrderButton {
         display: none;
     }
    

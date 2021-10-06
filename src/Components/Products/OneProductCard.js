@@ -43,7 +43,7 @@ function OneProductCard(props) {
                 <div className="card__back">
                     <Link to={`${url}/${props.singleProduct.id}`}>
                         <img className="productImage" src={props.singleProduct.picture} alt="Product" />
-                        <p className="card__back__description">{props.singleProduct.mini_description}</p>
+                        <p className="card__back__description">{props.singleProduct.short_description}</p>
                         <div><button className="deleteOrderButton card__body" >Užsakyti</button></div>
                         {/* <button className="deleteOrderButton card__body" onClick={() => props.changeQuantities(props.singleProduct, 100)}>Į krepšelį</button> */}
                     </Link>

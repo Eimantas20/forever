@@ -108,7 +108,7 @@
 }
 
 #flavors {
-    width:250px;
+    width:420px;
     margin-bottom: 10px;
     height:30px;
 }
@@ -137,6 +137,37 @@
     width: 100%;
 }
 
+.detailedInfo {
+    width:-moz-fit-content;
+    width:max-content;
+    display: grid;
+    max-width: 780px;
+    grid-template-columns: 80% 80px 80px;
+}
+.detailedInfoNameAmount, 
+.detailedInfoNamePerc {
+    width:-moz-fit-content;
+    width:max-content;
+    display: grid;
+    max-width: 780px;
+    grid-template-columns: 80% 80px;
+}
+.detailedInfoNameAmount :nth-child(3) {
+    display:none;
+}
+.detailedInfoNamePerc  :nth-child(2) {
+    display: none;
+}
+
+
+.displayNone {
+    display: none;
+}
+
+.alignRight {
+    text-align: right;
+}
+
 
 select {
     -webkit-appearance: button;
@@ -163,9 +194,12 @@ select {
     white-space: nowrap;
 }
 
-@media (max-width: 900px) and (min-width: 600px) {
+@media (max-width: 940px) and (min-width: 600px) {
     .fullDescription {
         width:599px;
+    }
+    .productsContainer {
+        width: 600px;
     }
 }
 
@@ -224,7 +258,7 @@ select {
         /* display: flex; */
         justify-content: center;
         width: 94%;
-        padding: 1rem;
+        /* padding: 1rem; */
     }
 
     .fullDescriptionImage {
@@ -239,6 +273,7 @@ select {
         padding: 0;
         display: grid;
         /* grid-template-columns: 100%; */
+        margin: 0;
     }
 
     .mainProductInfo * {
@@ -257,16 +292,41 @@ select {
         padding: 0 !important;
     }
 
+    .mainProductInfo h3 {
+        margin-bottom: 0.5rem;
+    }
+
     .mainProductInfo :not(:last-child) {
         padding: 0px;
     }
 
-    #flavors {
-        width: 150px;
+    .detailedInfo {
+        grid-template-columns: 60% 60px 60px;
     }
-    /* .orderSection {
-        margin: 0 auto;
-    } */
+    .detailedInfoNameAmount, 
+    .detailedInfoNamePerc {
+        grid-template-columns: 75% 80px;
+    }
+
+     #flavors {
+        width: 280px;
+        font-size: 0.7rem;
+
+    }
+    #flavors * {
+        width: 200px;
+        font-size: 0.7rem;
+         /* wrap text in compatible browsers
+  -moz-white-space: pre-wrap;
+  -o-white-space: pre-wrap;
+  white-space: pre-wrap;
+  hide text that can't wrap with an ellipsis
+  overflow: hidden;
+  text-overflow: ellipsis;
+  add border after every option
+  border-bottom: 1px solid #DDD; */
+    }
+
     .mainProductInfo :last-child {
         justify-self: center;
     }

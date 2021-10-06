@@ -61,7 +61,6 @@ class Cart extends Component {
                 productProperCopy.quantity = item.quantity;
                 productProperCopy.desiredFlavor = item.desiredFlavor
                 naujaeile.push(productProperCopy);
-
             })
             this.setState({ productsInCart: naujaeile }, () => this.genericPriceCalculation())
         }
@@ -76,9 +75,12 @@ class Cart extends Component {
         const { productsInCart } = this.state;
         let cost = 0;
         productsInCart.forEach(product => {
-            cost += product.quantity * product.price
+
+            cost += product.quantity *product.price
+
         });
-        this.setState({ totalPrice: Math.round((cost + (deliveryPrice || 0))*100)/100})
+        this.setState({ totalPrice: (Math.round((cost + (deliveryPrice || 0)) * 100) / 100).toFixed(2) })
+
     }
 
 //    renderAlert(message) {
@@ -99,8 +101,7 @@ class Cart extends Component {
     }
     
     render() {
-        console.log(this.state.productsInCart)
-        // console.log(this.state.productsInCart)
+     
         return(
             (this.state.productsInCart.length > 0) ?
                 

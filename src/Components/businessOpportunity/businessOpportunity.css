@@ -1,0 +1,41 @@
+.businessOpLayout  {
+    margin: 1rem auto;
+    max-width: 1200px;
+    padding: 1rem;
+}
+
+.businessOpLayout p {
+    text-align: left;
+}
+
+.businessOpLayout img {
+    width: 585px;
+}
+
+
+.businessWomanImg {
+    float: right;
+    margin: 0 0 1rem 1rem;
+
+}
+
+.silverPenImg {
+    float: left;
+    margin: 0 1rem 1rem 0;
+}
+
+.businessOpLayout h2 {
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+    .businessOpLayout {
+        padding: 5px;
+    }
+  
+    .businessOpLayout img{
+        float: unset;
+        width: 300px;
+        margin: 0 auto;
+    }
+}

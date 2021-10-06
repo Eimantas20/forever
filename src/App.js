@@ -13,6 +13,7 @@ import BusinessOpportunity from './Components/businessOpportunity/BusinessOpport
 import AllProducts from './Components/Products/AllProducts.js';
 import Contacts from './Components/Contacts/Contacts.js';
 import Cart from './Components/Cart/Cart.js';
+import About from './Components/about/about.js';
 import foreverLogo from './Infinity.png';
 import basketIcon from './img/basket-icon.png';
 import hamburgerIcon from './img/hamburger_icon.png'
@@ -92,16 +93,21 @@ class App extends Component {
         }
     }
     componentDidMount = () => {
+        // fetch('http://localhost:3000/products')
         fetch('http://localhost:3000/products')
+
             .then((response) => response.json())
             .then((response) => {
                 // const paragraphs = response.text[0];
+                console.log(response.text)
                 const NX = response.data
-                console.log(NX)
                 let productsFromDB = {};
                 let newList = [];
                 response.data.forEach(item => {
+                    item.price = (item.price / 100).toFixed(2);
                     productsFromDB[item.id] = item;
+                    
+
                 })
                 // console.log(productsFromDB)
                 let localStorageProducts = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -245,7 +251,7 @@ class App extends Component {
                             <Link onClick={() => this.openMenu()} to="/"><li className='listItem'>Pradžia</li></Link>
                             <Link onClick={() => this.openMenu()} to="/businessOpportunity"><li className='listItem'>Verslo galimybė</li></Link>
                             <Link onClick={() => this.openMenu()} to="/categories/"><li className='listItem'>Produktai</li></Link>
-                            <Link onClick={() => this.openMenu()} to="/Contacts"><li className='listItem floatRight'>Kontaktai </li></Link>
+                            <Link onClick={() => this.openMenu()} to="/contacts"><li className='listItem floatRight'>Kontaktai </li></Link>
                             <Link onClick={() => this.openMenuForCart()} tabIndex="0"  to="/cart">
                                 <li className='listItem floatRight deleteItem={this.deleteItem}'>
                                     <div style={{position: "relative", width: "40px", margin: "0 auto"}}>
@@ -266,15 +272,18 @@ class App extends Component {
                     <Route path="/" exact>
                         <HomePage categories={this.state.categories} />
                     </Route>
+                    <Route path="/about" exact>
+                        <About paragraphs={this.state.paragraphs}/>
+                    </Route>
                     <Route exact strict path="/businessOpportunity">
-                        <BusinessOpportunity businessOpportunity={this.state.paragraphs.businessOpportunity} />
+                        <BusinessOpportunity paragraphs={this.state.paragraphs} />
                     </Route>
                     <Route path="/checkout" render={(props) => <Checkout />}/>
                     <Route strict path="/categories/" render={(props) => <CategoryRouter categories={this.state.categories} stocks={this.state.productsInCart} />} />
                     <Route path="/categories/:category/:id" render={(props) => <FullProductDescription {...props} changeQuantities={this.changeQuantities} products={this.state.items} productsInCart={this.state.productsInCart} />} />
                     <Route exact strict path='/categories/:category' render={props => <AllProducts changeQuantities={this.changeQuantities}  key={window.location.pathname} products={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
 
-                    <Route path="/Contacts">
+                    <Route path="/contacts">
                         <Contacts kintamasis="pirmasis" />
                     </Route>
                     <Route path="/cart" component={(props) => <Cart changeQuantities={this.changeQuantities}  addToBasket={this.addToBasket} deleteItem={this.deleteItem} items={this.state.items} updateCartItemsCount={this.updateCartItemsCount} />} />
@@ -289,11 +298,14 @@ class App extends Component {
                                 </div>
 
                                 <div className="footerTop">
-                                    <a tabIndex="0" href="#">Vizija</a>
-                                    <Link tabIndex="0" to="/">Apie produktus</Link>
-                                    <Link tabIndex="0" to="/About">Verslo galimybė</Link>
+                                    {/* <a tabIndex="0" href="#">Vizija</a> */}
+                                    <Link tabIndex="0" to="/about">Apie įmone</Link>
+                                    <Link tabIndex="0" to="/categories/">Apie produktus</Link>
+                                    <Link tabIndex="0" to="/businessOpportunity">Verslo galimybė</Link>
+                                    {/* <Link tabIndex="0" to="/about">Verslo galimybė</Link> */}
+
                                     <a tabIndex="0" href="#">Siuntimas</a>
-                                    <Link tabIndex="0" to="/Contacts">Kontaktai</Link>
+                                    <Link tabIndex="0" to="/contacts">Kontaktai</Link>
                                 </div>
                                
                                 <div className="break"></div>

@@ -14,8 +14,8 @@ function FullProductDescription(props, startValue) {
     const [viewingProduct, setViewingProduct] = useState({});
     const [flavors, setFlavors] = useState([]);
     const [defaultFlavor, setDefaultFlavor] = useState('');
-
     const [sideEffect, handleSideEffect] = useState(0);
+    const [nutritionClassName, setNutritionClassName] = useState('detailedInfo')
     let { url, match } = useRouteMatch();
     let choosenProductId = parseInt(props.match.params.id);
     let kiekis;
@@ -62,12 +62,13 @@ function FullProductDescription(props, startValue) {
                 //     neededFlavor = document.getElementById('flavors').value
                 // }
                 // console.log(kiekis)
-                // console.log(neededFlavor)
 
                 kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId && neededFlavor ==  product.desiredFlavor).quantity;
             }
 
             if (foundProduct.flavor !== null) {
+                // if (foundProduct.hasOwnProperty('flavor')) {
+
                 setFlavors(foundProduct.flavor.split('\n'))
                 setDefaultFlavor(foundProduct.flavor.split('\n')[0])
                 neededFlavor = foundProduct.flavor.split('\n')[0]
@@ -82,7 +83,14 @@ function FullProductDescription(props, startValue) {
                     kiekis = productsInCartFromLocalStorage.find(product => product.id == choosenProductId).quantity;
             }
             setViewingProductQuantity(kiekis || 0)
+            return !foundProduct.nutrition_info ? setNutritionClassName('displayNone')
+                : !foundProduct.nutrition_percentage ? (setNutritionClassName('detailedInfoNameAmount'), console.log('detailedInfo2OutOf3 pirmas'))
+                    : !foundProduct.nutrition_amount ? (setNutritionClassName('detailedInfoNamePerc'), console.log('detailedInfo2OutOf3 antras'))
+                        
+            :null
+
         }
+       
     }
 
 
@@ -103,30 +111,29 @@ function FullProductDescription(props, startValue) {
     
     // const testas = (e) => console.log(e.target.value)
 
+
     return (viewingProduct ?
         <div className="fullDescription">
-        {/* { console.log(defaultFlavor)} */}
+        { console.log(viewingProductQuantity)}
             <div className="gridLayout">
                 <div>
                     <img className="fullDescriptionImage" src={viewingProduct.picture} alt="Product picture" />
                 </div>
                 <div className="mainProductInfo">
                     <h1>{viewingProduct.name}</h1>
-                    <h3>{viewingProduct.category}</h3>
-                    <p>{viewingProduct.mini_description}</p>
+                    <h3>{viewingProduct.category} | {viewingProduct.product_code}</h3>
+                    <p>{viewingProduct.short_description}</p>
                     {flavors.length > 1 ? 
                         <select name='flavors' id='flavors' onChange={() => pickFlavor()}>
                             {flavors.map((flavor) => {
                                 {/* return <option key={flavor} value={flavor} onClick={() => { console.log(document.getElementById('flavors').value)}}>{flavor}</option> */}
-                                return <option key={flavor} value={flavor}>{flavor}</option>
+                               return  <option key={flavor} value={flavor}>{flavor}</option>
                             })}
                         </select>
                     : null}
                     <p>Kiekis: <br />{viewingProduct.amount}</p>
                     <div className="smallerGap">
-                        <p>Porcijų skaičius  </p> 
                         <h3 style={{fontWeight:'bold'}}>€ {viewingProduct.price}</h3>
-                        <h3 style={{ fontWeight: 'bold' }}>ID: {viewingProduct.id}</h3>
                     </div>
                     <div className="oderSection">
                         {viewingProductQuantity == 0 ?
@@ -141,11 +148,17 @@ function FullProductDescription(props, startValue) {
                         }
                     </div>
                 </div>
-                <h4>Aprašymas:</h4>
-                <p className="aboutProduct">{viewingProduct.description}</p>
-                <p style={{textAlign: 'left', width: "100%"}}>{viewingProduct.nutrition_info}</p>
-
-            </div>
+                    <h4>Aprašymas:</h4>
+                    <p className="aboutProduct">{viewingProduct.description}</p>
+                    <p className="aboutProduct">{viewingProduct.daily_recommendation}</p>
+                    <p className="aboutProduct">{viewingProduct.other_ingredients}</p>
+                </div>
+                <div className={nutritionClassName}>
+                    <p>{viewingProduct.nutrition_info}</p>
+                    <p className="alignRight">{viewingProduct.nutrition_amount}</p>
+                    <p className="alignRight">{viewingProduct.nutrition_percentage}</p>
+                </div>
+                <p>{viewingProduct.explanations}</p>
            
         </div>
         :null
