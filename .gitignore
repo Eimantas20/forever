@@ -8,13 +8,9 @@
 # testing
 /coverage
 
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
-
+.vscode/
+vscode/
+/vscode
 # production
 /build
 
