@@ -4,8 +4,6 @@
     box-sizing: border-box;
 }
 
-
-
 .ulStyle {
     color: black;
     list-style-type: none;
@@ -13,15 +11,11 @@
     padding: 0;
     padding-top: 25px;
     margin-bottom: 70px;
-    /* overflow: hidden; */
     background-color: white;
-    /* position: fixed; */
     width: 90%;
-    /* height: 50px; */
     z-index: 2;
-    /* padding-bottom:60px; */
-    /* border-bottom: 2px solid goldenrod; */
 }
+
 a {
     color: #000000;
     text-decoration: none;
@@ -31,16 +25,11 @@ a {
 
 .categoryNav {
     border-top: 2px solid  darkgoldenrod;
-    /* border-bottom: 2px solid  darkgoldenrod; */
     margin-bottom: 0;
 }
 
 .activeCategory {
-    /* background-color:goldenrod; */
-    /* background-color: rgba(184, 135, 11, 0.432); */
     border-bottom: 3px solid black;
-    /* line-height: 1.8em; */
-    /* border-radius: 20px; */
     float: left;
     display: block;
     color: black;
@@ -48,17 +37,10 @@ a {
     padding: 0px 6px;
     position: relative;
     margin: 0 15px;
-
-    /* border-left: 2px solid darkgoldenrod; */
-    /* border-right: 2px solid darkgoldenrod; */
-
-    /* margin: 0 5px; */
 }
 
 .inactiveCategory{
-    /* background-color: rgba(184, 135, 11, 0.432); */
     line-height: 2em;
-    /* border-radius: 20px; */
     float: left;
     display: block;
     color: black;
@@ -67,27 +49,7 @@ a {
     position: relative;
     margin: 0 15px;
     transition: width .3s;
-
 }
-
-
-/* .listItemCategories {
-    line-height: 1em;
-    border-radius: 20px;
-    float: left;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    position: relative;
-    margin: 0 5px;
-
-} */
-
-/* .inactiveCategory:hover {
-    background-color: rgba(184, 135, 11, 0.432);
-    border-bottom: 3px solid black;
-} */
 
 .inactiveCategory::after {
     content: '';
@@ -101,46 +63,20 @@ a {
 
 .inactiveCategory:hover::after {
     width: 100%;
-    /* //transition: width .3s; */
 }
 
-/* .listItemCategories:hover {
-    color: #000000;
-    text-decoration: none ;
-    border-bottom: 50px solid black;
-    background-color: rgba(184, 135, 11, 0.432);
-} */
-
-/* .listItemCategories:active {
-    background-color: red;
-} */
-
-/* .listItemCategories:focus {
-    background-color: yellow;
-} */
-
-
-/* .productNav a:focus {
-    background-color: red;
-
-} */
 /* listItem got to be above floatRight, otherwise float: left takes place on cart and contacts as well */
 .listItem {
     float: left;
     display: block;
     color: black;
     text-align: center;
-    /* margin: 0px 16px; */
-    /* margin: 0; */
-
     margin: 14px 16px;
     position: relative;
 }
 
 .floatRight {
     float: right;
-    /* margin: 0; */
-    /* margin-right: 50px; */
 }
 
 
@@ -156,9 +92,6 @@ a {
     filter: blur(19px);
 
 }
-/* .listItem:focus {
-    background-color: darkmagenta;
-} */
 
 .listItem:hover {
     cursor: pointer; 
@@ -170,9 +103,7 @@ a {
 
 .productNav {
     list-style-type: none;
-    /* cursor: pointer; */
     margin-top: 20px;
-    /* width: 900px; */
     display: flex; 
     flex-direction: row;
     flex-wrap: wrap;
@@ -199,11 +130,9 @@ a {
   }
 }
 
-
 .ulStyle .icon, .dirToHome {
     display: none;
 }
-/* situos perkelet kazkur kitur manau */
 @media (max-width:520px) and (min-width:430px) {
     .productNav {
         display: grid;
@@ -224,7 +153,6 @@ a {
     .ulStyle a:not(:nth-child(6)) {
         display: none;
     }
-    /* .ulStyle a {display: none; float:left;} */
     .ulStyle a:first-child {
         display: block;
     }
@@ -317,38 +245,15 @@ a {
         flex-wrap: wrap;
     }
 
-    /* .ulStyle.responsive li:not(:nth-child(6)) {
-        margin: 14px 16px;
-    } */
-/* 
-    .ulStyle.responsive .cartItems {
-        margin-left: 150px;
-    } */
-
-  /* Styling the categoryNav */
     .productNav {
-        /* display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        align-content: center; */
-        /* display: grid;
-        grid-template-columns: 50% 50%;
-        grid-template-rows: 23px 23px 23px 23px;
-        justify-items: center;
-        margin: 2px 5px;
-        margin-bottom: 10px;
-        margin-top: 100px; */
          padding: 0;
 
     }
 
     .categoryNav li {
-        /* width: 100%; */
-        /* margin: 0 auto; */
         padding: 3px 5px;
         line-height: 1.5em;
         font-size: 0.8rem;
-      /* background-color: darkmagenta; */
         border-bottom: 1px solid goldenrod;
     }
 
@@ -365,6 +270,4 @@ a {
         border-bottom: 3px solid goldenrod;
         margin-bottom: 5px;
     }
-
-
 }

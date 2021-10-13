@@ -1,0 +1,137 @@
+.fullDescription {
+    width:780px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4em;
+    text-align: left;
+}
+
+.fullDescriptionImage {
+    width:100%;
+    overflow: hidden;
+}
+
+.mainProductInfo {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column; 
+}
+
+.mainProductInfo h1{ 
+    font-size: 2.1rem;
+    margin: 0
+}
+
+.mainProductInfo h3 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.detailedInfoNameAmount, 
+.detailedInfoNamePerc {
+    width:-moz-fit-content;
+    width:max-content;
+    display: grid;
+    max-width: 780px;
+    grid-template-columns: 80% 80px;
+}
+
+.detailedInfoNameAmount :nth-child(3) {
+    display:none;
+}
+
+.detailedInfoNamePerc  :nth-child(2) {
+    display: none;
+}
+
+.displayNone {
+    display: none;
+}
+
+#flavors {
+    width:420px;
+    margin-bottom: 10px;
+    height:30px;
+}
+
+.smallerGap > * {
+    padding-bottom: 0;
+}
+
+.smallerGap h3 {
+    font-weight: bold;
+}
+
+.aboutProduct {
+    grid-column-start: span 2;
+    text-align: justify;
+    width: 100%;
+}
+
+.alignRight {
+    text-align: right;
+}
+
+@media (max-width: 940px) and (min-width: 600px) {
+    .fullDescription {
+        width:599px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .fullDescription{
+        justify-content: center;
+        width: 94%;
+    }
+
+    .fullDescriptionImage {
+        width:300px;
+    }
+
+    .mainProductInfo {
+        padding: 0;
+        display: grid;
+        margin: 0;
+    }
+
+    .mainProductInfo * {
+        grid-column-start: span 2;
+    }
+
+    .mainProductInfo h1 {
+        font-weight:bold;
+    }
+
+    .mainProductInfo h1, h3{
+        font-size: 1rem;
+        padding: 0 !important;
+    }
+
+    .mainProductInfo h3 {
+        margin-bottom: 0.5rem;
+    }
+
+    .mainProductInfo :not(:last-child) {
+        padding: 0px;
+    }
+
+    .mainProductInfo :last-child {
+        justify-self: center;
+    }
+
+    .detailedInfoNameAmount, 
+    .detailedInfoNamePerc {
+        grid-template-columns: 75% 80px;
+    }
+
+    #flavors {
+        width: 280px;
+        font-size: 0.7rem;
+    }
+
+    #flavors * {
+        width: 200px;
+        font-size: 0.7rem;
+
+    }
+}

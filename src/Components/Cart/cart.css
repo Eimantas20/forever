@@ -17,7 +17,6 @@
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    /* align-items: flex-end; */
     align-items: center;
 }
 
@@ -25,36 +24,25 @@
     margin: 0;
 }
 
-/* .sidePanel {
-    width: 30%;
-    height: 100%;
-    position: fixed;
-    right:7%;
-} */
 .amount {
     margin-bottom: 8px;
 }
-
 
 .wrapper {
     width: 100%;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    /* margin-left: 1em; */
 }
 .wrapper > :nth-of-type(3){
     width: 90%;
     max-width: 34rem;
-    background-color: darkmagenta;
 }
 
-
-/* pasalint krc jei ka  */
 .testmeout {
-    /* width: max-content; */
     text-align: center;
 }
+
 .sidePanel {
     width: 40%;
     display: flex;
@@ -66,7 +54,6 @@
 .sidePanel h5 {
     text-align: left;
     margin-top:10px;
-    /* margin-top:3rem; */
 }
 
 .sidePanel a:last-child {
@@ -74,9 +61,8 @@
     margin: 0 auto;
 }
 
-hr {
+.cartBox hr {
     height: 1px; 
-    /* width:540px;  */
     width:auto;
     background-color: #ddd;
 }
@@ -86,10 +72,7 @@ hr {
 }
 
 .alignDeliveryType {
-    /* display:block; */
-    /* margin: 0 auto; */
     width: 17rem;
-    /* margin-left:0.5rem; */
 }
 
 .productImageInCart {
@@ -108,12 +91,8 @@ hr {
 }
 
 .quantities {
-    /* position: relative; */
-    /* top: -40%; */
-    /* float: right; */
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
     text-align: center;   
     flex-basis: 152px;
     flex-grow: 0;
@@ -142,12 +121,11 @@ hr {
     cursor: pointer;
     margin: 0 auto;
     margin-bottom:0.5rem;
-    /* display: inline-block; */
 }
 
 .discount:hover {
-     list-style-type: none;
-     color: black;
+    list-style-type: none;
+    color: black;
     background-color: rgba(184, 135, 11, 0.432);
     text-decoration: none;
 }
@@ -155,42 +133,35 @@ hr {
 /* ------Delivery OPTIONS-------- */
 
 .container {
-  display: block;
-  position: relative;
-  margin-bottom: 12px;
-  cursor: pointer;
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
     width: 17rem;
-  font-size: 22px;
-  color: black;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    font-size: 22px;
+    color: black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* Hide the browser's default radio button */
 .container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
 /* Create a custom radio button */
 .checkmark {
     position: absolute;
-    /* margin-left: auto; */
-    /* margin-right: auto; */
     left: 0;
     right: 0;
     text-align: center;
     height: 2rem;
     width: 17rem;
-    /* width: 100%; */
-    /* border-bottom: 2px solid goldenrod; */
     box-shadow: 0px 4px 2px -2px darkgoldenrod;
-    /* background-color: rgba(184, 135, 11, 0.432); */
-  /* border-radius: 50%; */
 }
 
 /* On mouse-over, add a grey background color */
@@ -200,30 +171,19 @@ hr {
 
 /* When the radio button is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  /* background-color: goldenrod; */
-    background-color: rgba(184, 135, 11, 0.432);
-
-  /* border: 2px solid black; */
-  
+    background-color: rgba(184, 135, 11, 0.432);  
 }
 
 .warning {
     color: red;
     font-size: 1rem;
 }
-/* 
-@media (max-width: 900px) and (min-width: 600px) {
-    .mobileDelete {
-        margin-top:10px;
-        margin-left: 20px; 
-        margin: auto;
-    }
-    
-} */
 
-Dropdown {
-    width: 540px !important;
+.emptyCart {
+    padding-top:50px;
 }
+
+
 @media (max-width:860px) and (min-width:600px) {
     .sidePanel {
         width:30%;
@@ -234,6 +194,7 @@ Dropdown {
     .testmeout {
         width: auto;
     }
+
     .cartBox {
         width: 94%;
         padding: 5px;
@@ -241,15 +202,6 @@ Dropdown {
         margin-bottom: 30px;
 
     }
-    /* .singleProduct {
-        width: 100%;
-        float: none;
-        margin-top: 2px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    } */
 
     .singleProduct {
         width: 100%;
@@ -258,6 +210,7 @@ Dropdown {
         grid-template-columns: 30% 70%;
         grid-template-rows: 50% 50%;
     }
+
     .singleProduct :first-child {
         width: 100%;
         grid-row-start: span 3;
@@ -272,6 +225,7 @@ Dropdown {
         font-size: 14px;
         text-align: center;
     }
+
     .productImageInCart {
         width:6rem;
     }
@@ -281,9 +235,11 @@ Dropdown {
         margin: 0px;
         display: none;
     }
+    
     .sidePanel {
         display: block;
     }
+
     .quantities {
         display:block;
         position: static;
@@ -292,6 +248,7 @@ Dropdown {
         margin-bottom: 5px;
         flex-basis: 0%;
     }
+
     .quantities .deleteOrderButton {
         display: none;
     }
@@ -300,11 +257,11 @@ Dropdown {
         margin: auto;
         margin-top:5px;
         margin-bottom: 5px;
-        /* margin-left: 20px; */
         display: block;
         width:25px;
         height: 25px;
     }
+
     .incDec{
         text-align: center;
     }
@@ -323,7 +280,6 @@ Dropdown {
 
     .sidePanel h4:last-child {
         text-align: center;
-        /* margin-top: 10px; */
         font-weight: bold;
     }
     .sidePanel h4 {

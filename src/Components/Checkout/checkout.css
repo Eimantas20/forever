@@ -1,19 +1,16 @@
 .centerCheckout * {
     display:block;
     text-align: left;
-    
 }
 
 .reset {
     display:flex;
     margin: 0 auto;
-    /* border: 2px solid green; */
     width: 60%;
     justify-content: center;
 }
 .centerCheckout {
     width: 20rem;
-    /* border: 2px solid red; */
 }
 
 .centerCheckout input {
@@ -50,30 +47,3 @@
         width: 100%;
     }
 }
-/* 
-.centered {
-    width:100%;
- flex-direction: column;
-    justify-content: center;
-} */
-
-
-/* .checkout * {
-    text-align: left;
-    display:block;
-} */
-
-/* .checkout {
-    text-align: center;
-    margin: 0 auto;
-    width: 24%;
-} */
-
-/* .reset {
-    display: flex;
-}
-
-.center {
-    flex-direction: column;
-    justify-content: center;
-}  */

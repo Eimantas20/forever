@@ -1,12 +1,9 @@
-import { render } from '@testing-library/react';
-import { object } from 'prop-types';
-import deleteButton from '../../img/delete-button.png'
-import React, {Component, useEffect, useState} from 'react';
-import { Link, useParams, useRouteMatch, useLocation, useHistory, Router, matchPath, withRouter  } from 'react-router-dom';
-import Dropdown from '../dropdown/Dropdown.js';
-// import Alert from './alert.js';
-import './cart.css';
 
+import deleteButton from '../../img/delete-button.png'
+import React, {Component} from 'react';
+import { Link  } from 'react-router-dom';
+import Dropdown from '../dropdown/Dropdown.js';
+import './cart.css';
 
 class Cart extends Component {
    
@@ -21,21 +18,17 @@ class Cart extends Component {
             enableButton: 'none',
             showWarning: false,
             terminals: '',
-            value: '', 
-            chosenTerminal: ''
+            terminalLocation: '',
+            chosenTerminal: '',
+            allowAcces: false
         }
     }
-    
 
     enableWarning= () => {
         this.setState({
             showWarning: true
-        }, () => console.log(this.state.showWarning));
+        });
     }   
-
-    // goToDiscount = () => console.log(this.props.productList);
-    goToDiscount = () => console.log('lopezas');
-
 
     componentDidMount = (props) => {
         this.gettingCartProducts(props);
@@ -43,26 +36,19 @@ class Cart extends Component {
 
     gettingCartProducts = (props) => {
         let fromLocalStorage = JSON.parse(localStorage.getItem('cartItems'));
-        let globalItemList = this.props.items;
+        let globalItemList = this.props.productsList;
         let newList = [];
-        let naujaeile = [];
         let productProperCopy;
-
         let globalItemListLength = Object.keys(globalItemList).length
         if (globalItemListLength > 0 && fromLocalStorage !== null) {
-            fromLocalStorage.map(item => {
-                // globalItemList[item.id].numeris = item.quantity
-                // globalItemList[item.id].skonis = item.desiredFlavor
-                // newList.push(globalItemList[item.id]);
-
+            fromLocalStorage.forEach(item => {
                 //Must make a deep product copy in order for it to lose reffernce to old one, and not to mix up the flavors and quantities.
                 productProperCopy = JSON.parse(JSON.stringify(globalItemList[item.id]));
-      
                 productProperCopy.quantity = item.quantity;
                 productProperCopy.desiredFlavor = item.desiredFlavor
-                naujaeile.push(productProperCopy);
+                newList.push(productProperCopy);
             })
-            this.setState({ productsInCart: naujaeile }, () => this.genericPriceCalculation())
+            this.setState({ productsInCart: newList }, () => this.genericPriceCalculation())
         }
     }
 
@@ -75,44 +61,29 @@ class Cart extends Component {
         const { productsInCart } = this.state;
         let cost = 0;
         productsInCart.forEach(product => {
-
             cost += product.quantity *product.price
-
         });
         this.setState({ totalPrice: (Math.round((cost + (deliveryPrice || 0)) * 100) / 100).toFixed(2) })
-
     }
 
-//    renderAlert(message) {
-//     return (
-        
-//         <div style={{zIndex: "100", height: "2000px", height: "200px", backgroundColor: "red"}}>
-//             <h1>this is my second component</h1>
-//         </div>
-//     );
-//     }
-
-
     getTerminals = () => {
-        this.state.terminals == "" && 
-        fetch('http://localhost:3000/terminals')
+        this.state.terminals === "" && 
+        fetch('http://192.168.1.231:3000/terminals')
             .then((response)=>response.json())
             .then((response) => this.setState({terminals: response}))  
     }
     
     render() {
-     
         return(
             (this.state.productsInCart.length > 0) ?
-                
                 <div className="cartBox">
                     <h4 className="testmeout">Tavo pirkinių krepšelis</h4>
                     {this.state.productsInCart.map(singleProduct => 
-                    
                         <div className="singleProduct" key={Math.random()}>
+                    {/* Key is set to Math.Random as temporary solution, no other unique key available from products */}
                             <div>
                                 <Link to={`/categories/${singleProduct.url}/${singleProduct.id}`} >
-                                    <img className="productImageInCart" src={singleProduct.picture} alt="Product picture" />
+                                    <img className="productImageInCart" src={singleProduct.picture} alt="Product" />
                                 </Link>
                             </div>
                             <div className="miniDescription">
@@ -131,95 +102,62 @@ class Cart extends Component {
                                 <button className="deleteOrderButton" onClick={() => this.props.changeQuantities(singleProduct, -100)}>Pašalinti prekę</button>
                                 <img className="mobileDelete" src={deleteButton} alt="Pašalinti" onClick={() => this.props.changeQuantities(singleProduct, -100)} />
                             </div>
-                            </div>)}
-                        <div className="sidePanel" >
-                            <div>
-                                <h4>Pasirinkite pristatymo būdą</h4>     
-                                <form className="wrapper" onChange={this.onChangeValue}>
-                                    <div className="alignDeliveryType" >
-                                        <h5>Paštomatai:</h5>
-                                        <label className="container">DPD €2.99
-                                        <input onClick={()=>this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ chosenTerminal: 'dpd', value: '', deliveryOption: 'DPD paštomatas €2.99', deliveryPrice: 2.99 })} />
-                                            <span className="checkmark"></span>
-                                        </label>
-                                        <label className="container">LP express €2.99
-                                        <input onClick={() => this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ chosenTerminal: 'lp', value: '', deliveryOption: 'LP express paštomatas €2.99', deliveryPrice: 2.99, enableButton: 'all', showWarning: false })}/>
-                                            <span className="checkmark"></span>
-                                        </label>
-                                        <label className="container">Omniva €2.99
-                                        <input onClick={() =>this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ chosenTerminal: 'omniva', value: '', deliveryOption: 'Omniva paštomatas €2.99', deliveryPrice: 2.99, enableButton: 'all', showWarning: false })}/>
-                                            <span className="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div className="alignDeliveryType">
-                                        <h5>Kurjeris:</h5>
-                                        <label className="container">DPD €5.99
-                                        <input type="radio" name="radio" value="5.99" onChange={() => this.setState({ choosenTerminal: '', terminals: '', value: 'DPD Kurjeris', deliveryOption: 'DPD Kurjeris €5.99', deliveryPrice: 5.99, enableButton: 'all', showWarning: false})} />
-                                            <span className="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <Dropdown
-                                            options={this.state.terminals[this.state.chosenTerminal]}
-                                            prompt='Pasirinkite paštomata' 
-                                            value={this.state.value}
-                                            onChange={value => this.setState({value})}
-                                        />
-                                    </div> 
-                                </form>
-                               
-                            {this.state.showWarning? <p className="warning">Prašome pasirinkti pristatymo būdą</p>:null}
-                            </div>
-                            <hr />
-                            <div>
-                                <h4> Kaina: € {this.state.totalPrice}</h4>
-                            </div>
-                            <br />
-                            <a className="discount" href="https://registracija.foreverliving.lt/lt/?fbclid=IwAR3li4MXHZeTX36_ASx3XW-239g7a4ldbQAgPSEeO7V6rLaagG_VfIVL8cI">5% nuolaida su registracija perkant virš €50 </a>
-                            <br />
-
-                                {/* <Link onClick={() => this.enableWarning()} style={{ pointerEvents: this.state.enableButton }}  to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.deliveryOption } }}>
-                            <button className="orderButton" onClick={() => this.enableWarning()}>
-                            
-                                    Pirkti
-                            </button>
-                                </Link> */}
-
-                            {/* <Link style={{ pointerEvents: this.state.enableButton }} to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.deliveryOption } }}>
-                        <button className="orderButton" onClick={()=>this.enableWarning()}>
-                                Pirkti
-                        </button>
-                            </Link> */}
-
-                        {/* {this.state.showWarning ?
-                            <Popup
-                                text='Close Me'
-                                closePopup={this.enableWarning()}
-                            />
-                            : null
-                        } */}
-
-                        <Link onClick={(e) =>  this.state.value == '' ? (e.preventDefault(), this.enableWarning()) : null} to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.value, deliveryPrice: this.state.deliveryPrice } }}>
+                        </div>
+                    )}
+                    <div className="sidePanel" >
+                        <div>
+                            <h4>Pasirinkite pristatymo būdą</h4>     
+                            <form className="wrapper" onChange={this.onChangeValue}>
+                                <div className="alignDeliveryType" >
+                                    <h5>Paštomatai:</h5>
+                                    <label className="container">DPD €2.99
+                                        <input onClick={() => this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ allowAcces: false, terminalLocation: '', chosenTerminal: 'dpd', deliveryOption: 'DPD paštomatas €2.99', deliveryPrice: 2.99 })} />
+                                        <span className="checkmark"></span>
+                                    </label>
+                                    <label className="container">LP express €2.99
+                                        <input onClick={() => this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ allowAcces: false, terminalLocation: '', chosenTerminal: 'lp', deliveryOption: 'LP express paštomatas €2.99', deliveryPrice: 2.99, enableButton: 'all', showWarning: false })}/>
+                                        <span className="checkmark"></span>
+                                    </label>
+                                    <label className="container">Omniva €2.99
+                                        <input onClick={() => this.getTerminals()} type="radio" name="radio" value="2.99" onChange={() => this.setState({ allowAcces: false, terminalLocation: '', chosenTerminal: 'omniva', deliveryOption: 'Omniva paštomatas €2.99', deliveryPrice: 2.99, enableButton: 'all', showWarning: false })}/>
+                                        <span className="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div className="alignDeliveryType">
+                                    <h5>Kurjeris:</h5>
+                                    <label className="container">DPD €5.99
+                                    <input type="radio" name="radio" value="5.99" onChange={() => this.setState({ allowAcces: true, choosenTerminal: '', terminals: '', deliveryOption: 'DPD Kurjeris €5.99', deliveryPrice: 5.99, enableButton: 'all', showWarning: false})} />
+                                        <span className="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <Dropdown
+                                        options={this.state.terminals[this.state.chosenTerminal]}
+                                        prompt='Pasirinkite paštomata' 
+                                        value={this.state.terminalLocation}
+                                        onChange={value => this.setState({ terminalLocation: value, allowAcces: true})}
+                                    />
+                                </div> 
+                            </form>
+                            {this.state.showWarning ? <p className="warning">Prašome pasirinkti pristatymo būdą</p> : null}
+                        </div>
+                        <hr />
+                        <div>
+                            <h4> Kaina: € {this.state.totalPrice}</h4>
+                        </div>
+                        <br />
+                        <a className="discount" href="https://registracija.foreverliving.lt/lt/?fbclid=IwAR3li4MXHZeTX36_ASx3XW-239g7a4ldbQAgPSEeO7V6rLaagG_VfIVL8cI">5% nuolaida su registracija perkant virš €50 </a>
+                        <br />
+                        <Link onClick={(e) =>  this.state.allowAcces === false ? (e.preventDefault(), this.enableWarning()) : null} to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.deliveryOption, terminalLocation: this.state.terminalLocation,deliveryPrice: this.state.deliveryPrice } }}>
                             <button className="orderButton">
                                 Pirkti
                             </button>
                         </Link>
-
                     </div>
-                </div>
-                
-            : <h2 style={{paddingTop:"50px"}}>Jūsų pirkinių krepšelis yra tuščias</h2>         
+                </div>    
+            : <h2 className="emptyCart">Jūsų pirkinių krepšelis yra tuščias</h2>         
         )
     }
 }
 
 export default Cart;
-
-{/* <Link to="/checkout" productsInCart={this.state.poroductsInCart}><button  className="orderButton">Pirkti</button></Link> */ }
-{/* <Link to={this.state.deliveryOption ? { pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.deliveryOption } }
-                                : ()=>{alert('haha')} }> */}
-{/* <Link style={{pointerEvents: this.state.enableButton}}  to={{ pathname: "/checkout", state: { productsInCart: this.state.productsInCart, totalPrice: this.state.totalPrice, deliveryOption: this.state.deliveryOption } }}>
-                                <button className="orderButton" >
-                                Pirkti
-                                </button>
-                            </Link> */}

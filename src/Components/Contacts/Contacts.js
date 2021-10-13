@@ -1,14 +1,12 @@
 import React from 'react';
 
-const Contacts = (props) => {
+const Contacts = () => {
     return (
         <div>
             <address>
-                <h1>{`Please don't hesitate getting in touch on +37067975619`}</h1>
-                <h2>{props.kintamasis}</h2> 
+                <h4>Skiltis šiuo metu yra tvarkoma, iškilus klausimams prašome kreiptis 860880885 arba daivagusevaite@gmail.com </h4>
             </address>
         </div>
-        
     )
 }
 

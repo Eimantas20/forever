@@ -1,15 +1,14 @@
 .App {
-  text-align: center;
-  position: relative;
-  min-height: 100vh;
-  font-family:'Titillium Web', sans-serif, 'MS Reference Sans Serif', 'Source Sans Pro', 'Microsoft Sans Serif', 'Lucida Sans Unicode';
-  /* font-family: , sans-serif; */
-   white-space: pre-line;
+    text-align: center;
+    position: relative;
+    min-height: 100vh;
+    font-family:'Titillium Web', sans-serif, 'MS Reference Sans Serif', 'Source Sans Pro', 'Microsoft Sans Serif', 'Lucida Sans Unicode';
+    white-space: pre-line;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 .projectName {
@@ -28,26 +27,30 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+.cartContainer {
+    position: relative;
+    width: 40px;
+    margin: 0 auto;
+}
+
 
 .cartItems {
     position: absolute;
-    /* position: relative; */
     color:black;
-    /* background-color: tomato; */
     background-color: rgba(220, 173, 50, 1);
     border:1px solid white;
     margin-left: 20px;
@@ -70,6 +73,15 @@
     align-items: center;
     text-align: center;
     padding-bottom: 2px;
+}
+.basketIcon {
+    width: 30px;
+    background: transparent;
+}
+
+.hamburgerIcon {
+    width: 50px;
+    z-index: 100;
 }
 
 .break {
@@ -98,6 +110,11 @@
     color: #6c757d !important;
 }
 
+.footerSocialNetwork {
+    width: 30px;
+    margin-left: 10px;
+}
+
 .breakAfter p{
     display: inline-block;
     margin-bottom: 10px;
@@ -106,7 +123,7 @@
     margin: 0 10px;
 }
 
-.footerTop {
+.footerBottom {
     display:flex;
     justify-content: space-around;
 }
@@ -135,12 +152,12 @@ a:hover {
         display:none;
     }
 
-    .footerTop {
-    display: flex;
-    flex-direction: column;
+    .footerBottom {
+        display: flex;
+        flex-direction: column;
     }
 
-    .footerTop > a {
+    .footerBottom > a {
         background-color: #f5f5f5;
         text-align: left;
         width: 100%;

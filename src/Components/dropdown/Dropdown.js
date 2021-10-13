@@ -1,11 +1,8 @@
-import { element } from 'prop-types';
 import React, { useState, useRef, useEffect } from 'react';
 import './dropdown.css';
 
 export default function Dropdown({
     options, 
-    label,
-    id,
     prompt, 
     value, 
     onChange
@@ -34,6 +31,7 @@ export default function Dropdown({
 
     const optionsUnicode = (options) => {
         const terminalArray = options.map(Object.values).map(single =>
+            // eslint-disable-next-line
             JSON.stringify(single).replace(/[\["\]']+/g, '').replace(/[\\,']+/g, ' ').toLowerCase().replace(/[ąčęėįšųūž]/g, m => chars[m]).split(' ').filter(e => e)
         )
         setTerminalStringifiedArray(terminalArray)
@@ -45,14 +43,14 @@ export default function Dropdown({
 
     function filter(options) {
         let viewTerminals = [];
-        let matchingTerminalsIds = [];
+        // let matchingTerminalsIds = [];
         const foo = {};
         
         // split queries to separates array comp and deletes empty spaces 
         const inputQuery = query.toLowerCase().replace(/[ąčęėįšųūž]/g, m => chars[m]).split(" ").filter(e => e)
 
         inputQuery.forEach(query => {
-            //tikrinam viena terminala
+            //Checking one terminal
             const check = (terminalQuery) => {
                 let number = terminalQuery.indexOf(query);
                
@@ -60,31 +58,36 @@ export default function Dropdown({
             }
             
             terminalStringifiedArray.forEach(terminal => {
-                if(terminal.some(check) == true) {
+                if(terminal.some(check) === true) {
                     let terminalId = parseInt(terminal[0])
                     let terminalCount = (foo[terminalId]) ?? 0;
                     foo[terminalId] = (terminalCount) + 1;
                 }
             })
-            matchingTerminalsIds = Object.keys(foo).filter(k=>foo[k] === inputQuery.length)
+            // matchingTerminalsIds = Object.keys(foo).filter(k=>foo[k] === inputQuery.length)
         })
-         matchingTerminalsIds.some(requestedTerminalId => {
-            viewTerminals.push(options.filter(option => option.id == requestedTerminalId))
-        })
-    
-        return inputQuery.length == 0 ? options : viewTerminals.flat()
+        // matchingTerminalsIds.some(requestedTerminalId => {
+        //     viewTerminals.push(options.filter(option => option.id === requestedTerminalId))
+        // })
+        // matchingTerminalsIds.some(requestedTerminalId => {
+        //     viewTerminals.push(options.filter(option => option.id.includes(requestedTerminalId)))
+        // })
+        return inputQuery.length === 0 ? options : viewTerminals.flat()
     }
 
     function displayValue() {
         if (query.length > 0) return query;
         if (value) return `${value.city}, ${value.name}, ${value.address}`;
+
         return "";
     }
 
     return(
-       (options == '' || options == undefined) ? null :
+       (options === '' || options === undefined) ? null :
        <div className="dropdown">
-            <div className="control" onClick={()=>setOpen(prev => !prev), ()=> optionsUnicode(options)}>
+            {/* <div className="control" onClick={()=>setOpen(prev => !prev), ()=> optionsUnicode(options)}> */}
+            <div className="control" onClick={() => {setOpen(prev => !prev); optionsUnicode(options)}}>
+
                     <div className="selected-value" >
                         <input type="text" 
                             ref={ref} 
@@ -108,7 +111,6 @@ export default function Dropdown({
                     setOpen(false);
                     }}>{option.city}, {option.name}, {option.address}</div>))
             }
-            
         </div>
     </div>
     )}

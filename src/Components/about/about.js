@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React from 'react';
 import './about.css';
 import sertificate from '../../img/about/sertificate.webp';
 import halal from '../../img/about/halal.webp';
@@ -6,12 +6,10 @@ import islamicSeal from '../../img/about/islamicSeal.webp';
 import kosher from '../../img/about/kosher.webp';
 import peta from '../../img/about/peta.webp';
 
-import silverPenImg from '../../img/silver-pen.jpg';
 
 
 const About = (props) => {
     const { aboutForeverProducts, aboutHalal, aboutKosher, aboutIslamicSeal, aboutPetaFree, aboutScienceSertificate } = props.paragraphs;
-    console.log(props)
     return (
         <div className="about">
             <h2>Apie įmonę</h2>
@@ -20,30 +18,30 @@ const About = (props) => {
             </div>
             <br className="clear" />
             <div className="setWidth">
-                <p><img src={sertificate}/>{aboutScienceSertificate}</p> 
+                <p><img src={sertificate} alt="Sertificate"/>{aboutScienceSertificate}</p> 
             </div>
             <br className="clear" />
              <div className="setWidth">
-                <p> <img src={peta} />{aboutPetaFree}</p>
+                <p> <img src={peta} alt="Peta"/>{aboutPetaFree}</p>
             </div>
             <br className="clear" />
 
             <div className="setWidth">
-                <p> <img src={islamicSeal} />{aboutIslamicSeal}</p>
+                <p> <img src={islamicSeal} alt="Islamic Seal" />{aboutIslamicSeal}</p>
             </div>
             <br className="clear" /> 
 
             <div className="setWidth">
-                <p><img src={kosher} />{aboutKosher}</p>
+                <p><img src={kosher} alt="Kosher"/>{aboutKosher}</p>
 
             </div>
             <br className="clear" />
 
             <div className="setWidth">
-                <p><img src={halal} />{aboutHalal}</p>
+                <p><img src={halal} alt="Halal"/>{aboutHalal}</p>
             </div>
             <br className="clear" />
-
+            
         </div>
     )
 }

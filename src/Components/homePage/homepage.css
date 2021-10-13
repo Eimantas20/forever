@@ -25,42 +25,15 @@
     display: grid;
     grid-template-columns: repeat(3, 33%);
     grid-template-rows: repeat(3, 470px);
-    /* grid-auto-rows:minmax(100px, 470px); */
     overflow:hidden;
     grid-gap: 6px;
     min-height: 0;
     min-width: 0;
 }
 
-
-
 .homePage a:nth-child(2) {
     grid-column: 2 / 4;
 }
-
-
-/* .maybe .fit2 {
-    width:200px;
-    height: auto;
-} */
-
-
-/* .fit::before {
-    content: "jhvbjhb";
-    background-color: red;
-    display: block;
-      width: 100px;
-    height: 100px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: 1;
-    text-align: center;
-    z-index: 100;
-    /transition: opacity .4s ease; 
-} */
 
 .maybe p {
     display: block;
@@ -77,47 +50,29 @@
     text-transform: uppercase;
     z-index: 20;
     transition: opacity 0.4s ease;
-
 }
 
 .maybe::before {
-        content: "";
-        color: #fff;
+    content: "";
+    color: #fff;
     background-color: transparent;
     display: block;
-      /* width: 100px; */
-   transition: 0.4s ease;
+    transition: 0.4s ease;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     opacity: 0;
-     /* height: 495px; */
-    /* width: 330px; */
     text-align: center;
     z-index: 10;
 }
 
 .maybe:hover::before {
-    /* background-color: cyan; */
     background-color: #000;
     z-index: 1;
     opacity:0.5;
 }
-
-@media (min-width: 780px) {
-    .maybe:hover p {
-    opacity:1;
-    z-index: 20;
-}
-}
-
-
-/* .maybe:hover::after {
-    opacity: 1;
-} */
-
 
 .imageLinks .fit {
     width: 100%;
@@ -134,9 +89,15 @@
 .imgContainer,
 .maybe {
    height: 100%;
-   /* min-width: 0; */
    max-width:100%;
 
+}
+
+@media (min-width: 780px) {
+    .maybe:hover p {
+    opacity:1;
+    z-index: 20;
+    }
 }
 
 @media screen and (max-width: 780px) {
@@ -148,12 +109,8 @@
     .homeContainer {
         min-width: auto;
         width: 100%;
-        /* margin: 10px; */
     }
-    /* .imageLinks {
-        margin: 10px;
-        padding: 10px;
-    } */
+
     .homeLinkToCategories {
         height: 100px;
     }
@@ -161,13 +118,11 @@
 
 @media screen and (max-width: 530px) {
     .imageLinks {
-        /* display: inline-grid; */
         padding: 10px;
         display: flex;
         flex-direction: column;
         width:100%;
         height: auto;
-        /* grid-auto-rows:minmax(100px, 470px); */
         overflow:hidden;
         grid-gap: 6px;
         min-height: 0;
@@ -179,23 +134,3 @@
         width: unset;
     }
 }
-
-/* 
-@media (max-width: 1100px) and (min-width: 600px) {
-    .homePage {
-        width: 95%;
-    }
-} */
-
-/* 
-@media screen and (max-width:600px) {
-    .homePage {
-        width:97%;
-    }
-} */
-
-
-
-
-/* color: #757575
-transition: opacity .4s ease */
