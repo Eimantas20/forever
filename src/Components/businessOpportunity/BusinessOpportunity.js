@@ -1,7 +1,7 @@
 import React from 'react';
 import './businessOpportunity.css'; 
-import businessWomanImg from '../../img/business-woman.jpg';
-import silverPenImg from '../../img/silver-pen.jpg';
+import businessWomanImg from '../../Img/business_woman.jpg';
+import silverPenImg from '../../Img/silver_pen.jpg';
 
 const BusinessOpportunity = (props) => {
     const { businessOpportunity, businessOpportunity2 } = props.paragraphs;

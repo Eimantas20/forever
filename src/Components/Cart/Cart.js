@@ -1,4 +1,4 @@
-import deleteButton from '../../img/delete-button.png'
+import deleteButton from '../../Img/delete_button.png'
 import React, {Component} from 'react';
 import { Link  } from 'react-router-dom';
 import Dropdown from './Dropdown/dropdown.js';

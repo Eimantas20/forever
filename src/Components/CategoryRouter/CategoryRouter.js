@@ -3,7 +3,7 @@ import {
     withRouter
 } from "react-router-dom";
 import React from 'react';
-import './CategoryRouter.css';
+import './categoryRouter.css';
 
 const CategoryRouter = (props) => {
     const { categories } = props;
