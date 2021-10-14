@@ -1,8 +1,7 @@
-
 import deleteButton from '../../img/delete-button.png'
 import React, {Component} from 'react';
 import { Link  } from 'react-router-dom';
-import Dropdown from '../dropdown/Dropdown.js';
+import Dropdown from './Dropdown/dropdown.js';
 import './cart.css';
 
 class Cart extends Component {

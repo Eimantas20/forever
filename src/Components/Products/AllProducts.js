@@ -1,8 +1,8 @@
 import { withRouter } from "react-router-dom";
 import React, { Component } from 'react';
-import './AllProducts.css';
-import Pagination from '../Pagination/Pagination.js';
-import OneProductCard from '../OneProductCard/OneProductCard.js';
+import './allProducts.css';
+import Pagination from '../Pagination/pagination.js';
+import OneProductCard from './OneProductCard/oneProductCard.js';
 
 class AllProducts extends Component {
     constructor(props) {
