@@ -1,12 +1,10 @@
 import React from 'react';
 import './about.css';
-import sertificate from '../../img/about/sertificate.webp';
-import halal from '../../img/about/halal.webp';
-import islamicSeal from '../../img/about/islamicSeal.webp';
-import kosher from '../../img/about/kosher.webp';
-import peta from '../../img/about/peta.webp';
-
-
+import sertificate from '../../Img/About/sertificate.webp';
+import halal from '../../Img/About/halal.webp';
+import islamicSeal from '../../Img/About/islamic_seal.webp';
+import kosher from '../../Img/About/kosher.webp';
+import peta from '../../Img/About/peta.webp';
 
 const About = (props) => {
     const { aboutForeverProducts, aboutHalal, aboutKosher, aboutIslamicSeal, aboutPetaFree, aboutScienceSertificate } = props.paragraphs;
