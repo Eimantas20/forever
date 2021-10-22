@@ -43,20 +43,19 @@ export default function Dropdown({
 
     function filter(options) {
         let viewTerminals = [];
-        // let matchingTerminalsIds = [];
+        let matchingTerminalsIds = [];
         const foo = {};
         
         // split queries to separates array comp and deletes empty spaces 
         const inputQuery = query.toLowerCase().replace(/[ąčęėįšųūž]/g, m => chars[m]).split(" ").filter(e => e)
-
         inputQuery.forEach(query => {
+
             //Checking one terminal
             const check = (terminalQuery) => {
                 let number = terminalQuery.indexOf(query);
-               
                 return number >= 0;
+
             }
-            
             terminalStringifiedArray.forEach(terminal => {
                 if(terminal.some(check) === true) {
                     let terminalId = parseInt(terminal[0])
@@ -64,11 +63,11 @@ export default function Dropdown({
                     foo[terminalId] = (terminalCount) + 1;
                 }
             })
-            // matchingTerminalsIds = Object.keys(foo).filter(k=>foo[k] === inputQuery.length)
+            matchingTerminalsIds = Object.keys(foo).filter(k=>foo[k] === inputQuery.length)
         })
-        // matchingTerminalsIds.some(requestedTerminalId => {
-        //     viewTerminals.push(options.filter(option => option.id === requestedTerminalId))
-        // })
+        matchingTerminalsIds.map(requestedTerminalId => {
+            viewTerminals.push(options.filter(option => option.id === parseInt(requestedTerminalId)))
+        })
         // matchingTerminalsIds.some(requestedTerminalId => {
         //     viewTerminals.push(options.filter(option => option.id.includes(requestedTerminalId)))
         // })
@@ -85,8 +84,8 @@ export default function Dropdown({
     return(
        (options === '' || options === undefined) ? null :
        <div className="dropdown">
-            {/* <div className="control" onClick={()=>setOpen(prev => !prev), ()=> optionsUnicode(options)}> */}
-            <div className="control" onClick={() => {setOpen(prev => !prev); optionsUnicode(options)}}>
+            <div className="control" onClick={()=>setOpen(prev => !prev), ()=> optionsUnicode(options)}>
+            {/* <div className="control" onClick={() => {setOpen(prev => !prev); optionsUnicode(options)}}> */}
 
                     <div className="selected-value" >
                         <input type="text" 
