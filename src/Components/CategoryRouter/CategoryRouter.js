@@ -14,7 +14,7 @@ const CategoryRouter = (props) => {
                     {categories.map((category) => {
                         let isActive = `/categories/${category.url}` === window.location.pathname;
                         let buttonClass = isActive ? "activeCategory" : "inactiveCategory";
-                        return <Link to={`/categories/${category.url}`} key={category.url}><li className={buttonClass}>{category.name}</li></Link>
+                        return <Link to={`/categories/${category.url}`} key={category.url}><li className={buttonClass} key={category.key}>{category.name}</li></Link>
                     })}
                 </ul>
             </nav>

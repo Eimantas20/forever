@@ -5,7 +5,7 @@ import {
     Link
 } from 'react-router-dom';
 import './app.css';
-import HomePage from '../HomePage/homePage.js'
+import HomePage from '../HomePage/homePage.js';
 import BusinessOpportunity from '../BusinessOpportunity/businessOpportunity.js';
 import AllProducts from '../Products/allProducts.js';
 import Contacts from '../Contacts/contacts.js';
@@ -19,8 +19,8 @@ import facebook from '../../Img/facebook.png';
 import instagram from '../../Img/instagram.png';
 // import './Components/CategoryRouter/NavigationBar.css';
 import Checkout from '../Cart/Checkout/checkout.js';
-import image_1 from '../../Img/Homepage/aloe_flower.jpg';
-import image_2 from '../../Img/Homepage/drink.jpg';
+import image_1 from '../../Img/Homepage/drink.jpg';
+import image_2 from '../../Img/Homepage/aloe_flower.jpg';
 import image_3 from '../../Img/Homepage/dancing.jpg';
 import image_4 from '../../Img/Homepage/aloe_leaf3.jpg';
 import image_5 from '../../Img/Homepage/skin_care.jpg';
@@ -47,37 +47,44 @@ class App extends Component {
                 {
                     url: "biciu_produktai",
                     name: "Bičių produktai",
-                    img: image_1
+                    img: image_1,
+                    key: 'ca'
                 },
                 {
                     url: "eteriniai_aliejai",
                     name: "Eteriniai aliejai",
-                    img: image_2
+                    img: image_2,
+                    key: 'cb'
                 },
                 {
                     url: "odos_prieziura",
                     name: "Odos priežiūros",
-                    img: image_3
+                    img: image_3,
+                    key: 'cc'
                 },
                 {
                     url: "svorio_reguliavimas",
                     name: "Svorio reguliavimas",
-                    img: image_4
+                    img: image_4,
+                    key: 'cd'
                 },
                 {
                     url: "maisto_papildai",
                     name: "Maisto papildai",
-                    img: image_5
+                    img: image_5,
+                    key: 'ce'
                 },
                 {
                     url: "gerimai",
                     name: "Gėrimai",
-                    img: image_6
+                    img: image_6,
+                    key: 'cf'
                 },
                 {
                     url: "higienos_priemones",
                     name: "Higienos priemonės",
-                    img: image_7
+                    img: image_7,
+                    key: 'cg'
                 }
             ]
         }
@@ -172,25 +179,25 @@ class App extends Component {
                     <nav>
                         <ul className='ulStyle' id='topNav'>
                             <Link className="dirToHome" to="/"><p>Dibutes Alavijai</p> </Link>
-                            <Link onClick={() => this.openMenu()} to="/"><li className='listItem'>Pradžia</li></Link>
-                            <Link onClick={() => this.openMenu()} to="/businessOpportunity"><li className='listItem'>Verslo galimybė</li></Link>
-                            <Link onClick={() => this.openMenu()} to="/categories/"><li className='listItem'>Produktai</li></Link>
-                            <Link onClick={() => this.openMenu()} to="/contacts"><li className='listItem floatRight'>Kontaktai </li></Link>
+                            <Link onClick={() => this.openMenu()} to="/"><li className='listItem' key="navA">Pradžia</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/businessOpportunity"><li className='listItem' key="navB">Verslo galimybė</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/categories/"><li className='listItem' key="navC">Produktai</li></Link>
+                            <Link onClick={() => this.openMenu()} to="/contacts"><li className='listItem floatRight' key="navD">Kontaktai </li></Link>
                             <Link onClick={() => this.openMenuForCart()} tabIndex="0"  to="/cart">
                                 <li className='listItem floatRight'>
-                                    <div className="cartContainer">
+                                    <div className="cartContainer" key="navE">
                                         <div className="cartItems"><p className="cartText">{this.state.cartItemCount}</p></div>
                                         <img className="basketIcon" src={basketIcon} alt={'Cart Icon'} />
                                     </div>
                                 </li> 
                             </Link>
-                            <li className="icon" >
+                            <li className="icon" key="navF">
                                 <img onClick={() => this.openMenu()} className="hamburgerIcon" src={hamburgerIcon} alt={'Menu img'} />
                             </li>
                         </ul>
                     </nav>
                     <Link to="/">
-                        <h1 className="projectName">Alavijo Produktai</h1>
+                        <h1 className="projectName" key="navG">Alavijo Produktai</h1>
                     </Link>
                     {/* <img className="logoStyle" src={foreverLogo} alt={'Forever Logo'} /> */}
                     <Route path="/" exact>
